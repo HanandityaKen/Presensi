@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
-  <!-- Tailwind CSS CDN -->
-  {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" /> --}}
+  <title>Login Admin</title>
   @vite('resources/css/app.css')
   <!-- FontAwesome Icons CDN -->
   <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
@@ -16,14 +14,20 @@
     <!-- Right Side with Rounded Right Edge (Sign in form on the Left) -->
     <div class="md:w-1/2 w-full bg-blue-500 flex justify-center items-center">
       <div class="w-full h-full bg-white md:rounded-r-3xl p-8 md:p-16 flex flex-col justify-center shadow-lg">
-        <h2 class="text-4xl font-semibold text-gray-700 mb-6">Login</h2>
-        <form method="POST" action="{{ route('login') }}">
+        <h2 class="text-4xl font-semibold text-gray-700 mb-6">Login Admin</h2>
+        <form method="POST" action="{{ route('admin.login.proses') }}">
           @csrf
           <div class="mb-6">
-            <input type="text" name="username" placeholder="Username" class="w-full py-3 px-4 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="text" name="username" placeholder="Username" class="w-full py-3 px-4 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            @error('username')
+              <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+            @enderror
           </div>
           <div class="mb-6">
-            <input type="password" name="password" placeholder="Password" class="w-full py-3 px-4 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="password" name="password" placeholder="Password" class="w-full py-3 px-4 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            @error('password')
+              <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+            @enderror
           </div>
           <button type="submit" class="w-full bg-blue-500 text-white py-3 px-4 rounded-2xl font-semibold hover:bg-blue-600">Login</button>
         </form>
