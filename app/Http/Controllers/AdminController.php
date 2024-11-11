@@ -15,4 +15,14 @@ class AdminController extends Controller
     {
         return view('admin.data-presensi');
     }
+
+    public function createUser()
+    {
+        return view('admin.create-user');
+    }
+
+    public function editUser()
+    {
+        return view('admin.edit-user');
+    }
 }
