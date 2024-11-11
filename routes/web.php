@@ -16,3 +16,5 @@ Route::post('/user-login-proses', [AuthController::class, 'userLoginProses'])->n
 
 Route::get('/data-user', [AdminController::class, 'crudUser'])->name('data.user');
 Route::get('/data-presensi', [AdminController::class, 'dataPresensi'])->name('data.presensi');
+Route::get('/tambah-user', [AdminController::class, 'createUser'])->name('create.user');
+Route::get('/edit-user', [AdminController::class, 'editUser'])->name('edit.user');
