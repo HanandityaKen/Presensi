@@ -4,8 +4,8 @@
             <i class="fas fa-bars w-6 h-6"></i>
         </button>
     </div>
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center space-x-4 mr-4">
         <img src="https://via.placeholder.com/30" alt="User Avatar" class="rounded-full w-8 h-8">
-        <span class="text-gray-500">User</span>
+        <span class="text-gray-500">{{$admin->display_name}}</span>
     </div>
 </header>

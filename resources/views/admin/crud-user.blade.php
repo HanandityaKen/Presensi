@@ -7,8 +7,10 @@
     
     <!-- Card container for the table -->
     <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl text-blue-500 font-semibold mb-6">Data User</h2>
-        <button class="mb-6 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Tambah data</button>
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl text-blue-500 font-semibold">Data User</h2>
+            <a href="{{route('create.user.view')}}" class="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Tambah data</a>
+        </div>
         <div class="overflow-x-auto">
             <!-- <table class="min-w-full bg-white border border-gray-300"> -->
             <table class="mt-2 min-w-full bg-white border-gray-300">
