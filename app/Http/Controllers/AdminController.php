@@ -49,4 +49,14 @@ class AdminController extends Controller
     {
         return view('admin.edit-user');
     }
+
+    public function crudRole()
+    {
+        return view('admin.crud-role');
+    }
+
+    public function createRole()
+    {
+        return view('admin.create-role');
+    }
 }
