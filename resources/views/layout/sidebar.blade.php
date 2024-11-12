@@ -19,6 +19,14 @@
                 <span class="ml-3">Data Presensi</span>
             </a>
         </li>
+        <li class="mt-2"> 
+            <a href="{{ url('/data-role') }}" 
+               class="flex items-center py-2 px-4 rounded-lg ml-7
+                      {{ Request::is('data-role') ? 'bg-blue-500 text-white' : 'text-gray-500 hover:bg-blue-500 hover:text-white' }}">
+                <i class="fas fa-briefcase w-6"></i>
+                <span class="ml-3">Data Role</span>
+            </a>
+        </li>
     </ul>
 </div>
 

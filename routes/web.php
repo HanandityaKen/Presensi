@@ -19,3 +19,5 @@ Route::get('/data-presensi', [AdminController::class, 'dataPresensi'])->name('da
 Route::get('/create-user', [AdminController::class, 'createUserView'])->name('create.user.view');
 Route::post('/create-user-proses', [AdminController::class, 'createUser'])->name('create.user');
 Route::get('/edit-user', [AdminController::class, 'editUser'])->name('edit.user');
+Route::get('/data-role', [AdminController::class, 'crudRole'])->name('data.role.view');
+Route::get('/create-role', [AdminController::class, 'createRole'])->name('create.role.view');

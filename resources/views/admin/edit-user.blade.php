@@ -8,27 +8,19 @@
 
         <form>
             <div class="mb-4">
-                <label for="nama_item" class="block text-gray-700">
-                    Nama Item
+                <label for="username" class="block text-gray-700">
+                    Username
                     <span class="text-red-500 font-semibold">*</span> 
                 </label>
-                <input type="text" id="nama_item" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan nama item" required>
+                <input type="text" id="username" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan nama item" required>
             </div>
 
             <div class="mb-4">
-                <label for="deskripsi" class="block text-gray-700">
-                    Deskripsi
+                <label for="password" class="block text-gray-700">
+                    Password
                     <span class="text-red-500 font-semibold">*</span> 
                 </label>
-                <textarea id="deskripsi" rows="4" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan deskripsi" required></textarea>
-            </div>
-
-            <div class="mb-4">
-                <label for="harga" class="block text-gray-700">
-                    Harga
-                    <span class="text-red-500 font-semibold">*</span> 
-                </label>
-                <input type="number" id="harga" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan harga" required>
+                <input type="password" id="password" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan harga" required>
             </div>
 
             <div class="mt-6 flex justify-end">
