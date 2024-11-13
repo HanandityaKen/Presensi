@@ -6,21 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
 {
+    //User
+
     public function crudUser()
     {
         $admin = Auth::guard('admin')->user();
 
         return view('admin.crud-user', compact('admin'));
-    }
-
-    public function dataPresensi()
-    {
-        return view('admin.data-presensi');
     }
 
     public function createUserView()
@@ -50,13 +48,54 @@ class AdminController extends Controller
         return view('admin.edit-user');
     }
 
-    public function crudRole()
+    //Data Presensi
+    public function dataPresensi()
     {
-        return view('admin.crud-role');
+        $admin = Auth::guard('admin')->user();
+
+        return view('admin.data-presensi', compact('admin'));
     }
 
-    public function createRole()
+    //Role
+
+    public function crudRole()
     {
-        return view('admin.create-role');
+        $admin = Auth::guard('admin')->user();
+
+        $roles = Role::all();
+
+        return view('admin.crud-role', compact('admin', 'roles'));
+    }
+
+    public function createRoleView()
+    {
+        $admin = Auth::guard('admin')->user();
+
+        $roles = Role::paginate(10);
+
+
+        return view('admin.create-role', compact('admin', 'roles'));
+    }
+
+    public function createRole(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        Role::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('data.role.view')->with('success', 'Role berhasil ditambahkan.');
+    }
+
+    public function deleteRole($id)
+    {
+        $role = Role::findOrFail($id);
+
+        $role->delete();
+
+        return redirect()->route('data.role.view')->with('success', 'Role berhasil dihapus.');
     }
 }

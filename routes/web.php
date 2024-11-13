@@ -20,4 +20,6 @@ Route::get('/create-user', [AdminController::class, 'createUserView'])->name('cr
 Route::post('/create-user-proses', [AdminController::class, 'createUser'])->name('create.user');
 Route::get('/edit-user', [AdminController::class, 'editUser'])->name('edit.user');
 Route::get('/data-role', [AdminController::class, 'crudRole'])->name('data.role.view');
-Route::get('/create-role', [AdminController::class, 'createRole'])->name('create.role.view');
+Route::get('/create-role', [AdminController::class, 'createRoleView'])->name('create.role.view');
+Route::post('/create-role-proses', [AdminController::class, 'createRole'])->name('create.role');
+Route::delete('/delete-role-proses/{id}', [AdminController::class, 'deleteRole'])->name('delete.role');
