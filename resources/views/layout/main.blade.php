@@ -12,38 +12,51 @@
 
     <div class="flex h-screen">
 
-        <!-- Sidebar -->
-        @include('layout.sidebar')
+    <!-- Sidebar -->
+    @include('layout.sidebar')
 
-        <!-- Main Content -->
-        <div class="flex-1 overflow-y-auto">
-            
-            <!-- Header -->
-            @include('layout.header')
+    <!-- Main Content -->
+    <div class="flex-1 overflow-y-auto">
+        
+        <!-- Header -->
+        @include('layout.header')
 
-            <!-- Page Content -->
-            <main class="flex-1 p-6">
-                @yield('content')
-            </main>
-        </div>
+        <!-- Page Content -->
+        <main id="mainContent" class="flex-1 p-6 pt-28 transition-all duration-300">
+            @yield('content')
+        </main>
+    </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const sidebar = document.getElementById('sidebar');
-        const toggleButton = document.getElementById('sidebarToggle');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const sidebar = $('#sidebar');
+            const mainContent = $('#mainContent');
 
-        // Cek apakah elemen ada sebelum menambahkan event listener
-        if (sidebar && toggleButton) {
-            toggleButton.addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
+            $('[data-drawer-toggle="sidebar"]').click(function() {
+                sidebar.toggleClass('-translate-x-full'); 
+
+                if (sidebar.hasClass('-translate-x-full')) {
+                    mainContent.removeClass('lg:ml-64');
+                } else {
+                    mainContent.addClass('lg:ml-64');
+                }
             });
-        }
-    });
-</script>
+
+            $(window).resize(function() {
+                if ($(window).width() >= 1024) {
+                    sidebar.removeClass('-translate-x-full'); 
+                    mainContent.addClass('lg:ml-64'); 
+                } else {
+                    sidebar.addClass('-translate-x-full'); 
+                    mainContent.removeClass('lg:ml-64'); 
+                }
+            }).trigger('resize'); 
+        });
+    </script>
 
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
 

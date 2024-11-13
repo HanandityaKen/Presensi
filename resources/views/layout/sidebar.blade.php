@@ -1,7 +1,4 @@
-<div id="sidebar" class="w-64 bg-white text-gray-700 p-4 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:relative">
-    <div class="flex justify-center items-center mb-8">
-        <h1 class="text-xl font-semibold text-blue-500 text-center w-full">Sistem Presensi</h1>
-    </div>
+<div id="sidebar" class="fixed left-0 z-40 w-64 h-[calc(100vh-4rem)] bg-white text-gray-700 p-4 top-16 transform -translate-x-full transition-transform duration-300">
     <ul>
         <li>
             <a href="{{ url('/data-user') }}" 
@@ -29,4 +26,3 @@
         </li>
     </ul>
 </div>
-
