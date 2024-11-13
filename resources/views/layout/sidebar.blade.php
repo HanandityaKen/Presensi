@@ -13,7 +13,7 @@
                class="flex items-center py-2 px-4 rounded-lg ml-7
                       {{ Request::is('data-presensi') ? 'bg-blue-500 text-white' : 'text-gray-500 hover:bg-blue-500 hover:text-white' }}">
                 <i class="fas fa-calendar-check w-6"></i>
-                <span class="ml-3">Data Presensi</span>
+                <span class="ml-3">Data Presensii</span>
             </a>
         </li>
         <li class="mt-2"> 
