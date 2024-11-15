@@ -5,7 +5,7 @@
 <div class="container mx-auto p-4">
     <div class="bg-white shadow-md rounded-lg p-6">
         <h2 class="text-2xl text-blue-500 font-semibold mb-6">Tambah Data Role</h2>
-        <form action="{{route('create.role')}}" method="POST">
+        <form action="{{route('admin.role.store')}}" method="POST">
             @csrf
             <div class="mb-4">
                 <label for="name" class="block text-gray-700">
