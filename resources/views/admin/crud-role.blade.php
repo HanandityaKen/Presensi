@@ -49,7 +49,7 @@
                             </td>
                         </tr> 
                     @empty
-                        <span class="flex items-center">Data Not Found</span>
+
                     @endforelse
                 </tbody>
             </table>

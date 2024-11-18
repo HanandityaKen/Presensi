@@ -13,7 +13,7 @@
         <li class="mt-2"> 
             <a href="{{ url('/data-presensi') }}" 
                 class="flex items-center py-2 px-4 rounded-lg ml-5
-                    {{ Request::is('data-presensi') ? 'bg-blue-500 text-white' : 'text-gray-500 hover:bg-blue-500 hover:text-white' }}">
+                    {{ Request::is('data-presensi*') ? 'bg-blue-500 text-white' : 'text-gray-500 hover:bg-blue-500 hover:text-white' }}">
                 <i class="fas fa-calendar-check w-6"></i>
                 <span class="ml-3">Data Presensi</span>
             </a>
@@ -27,9 +27,9 @@
             </a>
         </li>
         <li class="mt-2"> 
-            <a href="{{ url('/jam-kerja') }}" 
+            <a href="{{ route('admin.work-hour.index') }}" 
                 class="flex items-center py-2 px-4 rounded-lg ml-5
-                    {{ Request::is('jam-kerja') ? 'bg-blue-500 text-white' : 'text-gray-500 hover:bg-blue-500 hover:text-white' }}">
+                    {{ Request::is('admin/work-hour*') ? 'bg-blue-500 text-white' : 'text-gray-500 hover:bg-blue-500 hover:text-white' }}">
                 <i class="fas fa-clock w-6"></i>
                 <span class="ml-3">Jam Kerja</span>
             </a>
