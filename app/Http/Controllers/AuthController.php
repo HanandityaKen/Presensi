@@ -48,11 +48,11 @@ class AuthController extends Controller
         if (!Auth::guard('admin')->attempt(['username' => $request->username, 'password' => $request->password])) {
             return back()->withErrors([
                 'username' => 'Username yang Anda masukkan salah',
-                'password' => 'Password yang Anda masukkan salah',
+                'password' => 'Password yang Acda masukkan salah',
             ]);
         }
 
-        return redirect()->intended(route('data.user'));
+        return redirect()->intended(route('admin.user.index'));
 
     }
 }

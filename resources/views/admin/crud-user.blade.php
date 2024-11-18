@@ -23,24 +23,25 @@
         <div class="overflow-x-auto">
             <!-- <table class="min-w-full bg-white border border-gray-300"> -->
             <table class="mt-2 min-w-full bg-white border-gray-300">
-                <thead class="bg-gray-50">
-                    <tr class="border-b">
-                        <th class="px-4 py-4">
+            <table id="search-table">
+                <thead>
+                    <tr>
+                        <th>
                             <span class="flex items-center">
                                 No
                             </span>
                         </th>
-                        <th class="px-4 py-4">
+                        <th>
                             <span class="flex items-center">
                                 Username
                             </span>
                         </th>
-                        <th class="px-4 py-4">
+                        <th>
                             <span class="flex items-center">
                                 Role
                             </span>
                         </th>
-                        <th class="px-4 py-4">
+                        <th>
                             <span class="flex items-center">
                                 Action
                             </span>
@@ -49,10 +50,10 @@
                 </thead>
                 <tbody>
                     @forelse ($users as $index => $user) 
-                        <tr class="border-b">
-                            <td class="px-4 py-2">{{$index + 1}}</td>
-                            <td class="px-4 py-2">{{$user->username}}</td>
-                            <td class="px-4 py-2">{{$user->role}}</td>
+                        <tr>
+                            <td>{{$index + 1}}</td>
+                            <td>{{$user->username}}</td>
+                            <td>{{$user->role}}</td>
                             <td>
                                 <a href="{{route('admin.user.edit', $user->id)}}">
                                     <button class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 ml-2">
@@ -83,6 +84,13 @@
 
 @push('scripts')
     <script>
+        if (document.getElementById("search-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+            const dataTable = new simpleDatatables.DataTable("#search-table", {
+                searchable: true,
+                sortable: false
+            });
+        }
+
         function confirmDelete(roleId) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',

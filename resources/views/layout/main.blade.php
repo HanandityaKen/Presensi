@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     @vite('resources/css/app.css')
 </head>
-<body class="bg-blue-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800">
 
     <div class="flex h-screen">
 
@@ -22,7 +22,7 @@
         @include('layout.header')
 
         <!-- Page Content -->
-        <main id="mainContent" class="flex-1 p-6 pt-28 transition-all duration-300">
+        <main id="mainContent" class="flex-1 p-6 pt-28 lg:ml-64 transition-all duration-300">
             @yield('content')
         </main>
     </div>
@@ -33,6 +33,10 @@
         $(document).ready(function() {
             const sidebar = $('#sidebar');
             const mainContent = $('#mainContent');
+
+            // Pastikan sidebar terbuka saat halaman pertama dimuat
+            sidebar.removeClass('-translate-x-full');
+            mainContent.addClass('lg:ml-64');
 
             // Toggle Sidebar tanpa backdrop
             $('#sidebarToggle').click(function() {
@@ -47,14 +51,15 @@
 
             $(window).resize(function() {
                 if ($(window).width() >= 1024) {
-                    sidebar.removeClass('-translate-x-full'); 
-                    mainContent.addClass('lg:ml-64'); 
+                    sidebar.removeClass('-translate-x-full');
+                    mainContent.addClass('lg:ml-64');
                 } else {
-                    sidebar.addClass('-translate-x-full'); 
-                    mainContent.removeClass('lg:ml-64'); 
+                    sidebar.addClass('-translate-x-full');
+                    mainContent.removeClass('lg:ml-64');
                 }
-            }).trigger('resize'); 
+            }).trigger('resize');
         });
+
     </script>
 
 

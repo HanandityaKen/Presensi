@@ -22,19 +22,20 @@
         @endif
         <div class="overflow-x-auto mt-2">
             <!-- <table class="min-w-full bg-white border border-gray-300"> -->
-            <table class="min-w-full bg-white border-gray-300">
+            <!-- <table class="min-w-full bg-white border-gray-300"> -->
+            <table id="search-table">
                 <thead>
                     <tr class="border-b">
-                        <th class="text-left px-4 py-2">No</th>
-                        <th class="text-left px-4 py-2">Nama</th>
-                        <th class="text-left px-4 py-2">Action</th>
+                        <th><span class="flex items-center">No</span></th>
+                        <th><span class="flex items-center">Nama</span></th>
+                        <th><span class="flex items-center">Action</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($roles as $index => $role)
-                        <tr class="border-b">
-                            <td class="px-4 py-2">{{$index + 1}}</td>
-                            <td class="px-4 py-2">{{$role->name}}</td>
+                        <tr>
+                            <td>{{$index + 1}}</td>
+                            <td>{{$role->name}}</td>
                             <td>
                                 <button 
                                     class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
@@ -48,7 +49,7 @@
                             </td>
                         </tr> 
                     @empty
-                        <span>Data Not Found</span>
+                        <span class="flex items-center">Data Not Found</span>
                     @endforelse
                 </tbody>
             </table>
@@ -115,6 +116,13 @@
         //         });
         //     }
         // });
+
+        if (document.getElementById("search-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+            const dataTable = new simpleDatatables.DataTable("#search-table", {
+                searchable: true,
+                sortable: false
+            });
+        }
 
         function confirmDelete(roleId) {
             Swal.fire({

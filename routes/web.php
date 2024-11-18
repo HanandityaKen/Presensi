@@ -15,8 +15,8 @@ Route::post('/admin-login-proses', [AuthController::class, 'adminLoginProses'])-
 
 Route::get('/', [AuthController::class, 'showUserLoginForm'])->name('user.login');
 Route::post('/user-login-proses', [AuthController::class, 'userLoginProses'])->name('user.login.proses');
-
 Route::get('/data-presensi', [AdminController::class, 'dataPresensi'])->name('data.presensi');
+Route::get('/jam-kerja', [AdminController::class, 'workHour'])->name('work.hour');
 
 //admin
 Route::prefix('admin')->as('admin.')->group(function () {
