@@ -1,4 +1,4 @@
-<header class="fixed top-0 bg-white w-full py-4 px-6 sm:px-12 flex z-50">
+<header class="fixed top-0 bg-white w-full py-5 px-6 sm:px-12 flex z-50">
     <div class="w-full justify-between items-center lg:flex">
         <div class="flex items-center space-x-6">
             <button id="sidebarToggle">
@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="relative flex items-center space-x-4 mr-4">
-        <img src="https://via.placeholder.com/30" alt="User Avatar" class="rounded-full w-8 h-8">
+        {{-- <img src="https://via.placeholder.com/30" alt="User Avatar" class="rounded-full w-8 h-8"> --}}
         <button id="dropdownToggle" class="flex items-center space-x-2 text-gray-500 hover:text-gray-700">
             <span>{{$admin->display_name}}</span>
             <svg id="dropdownIcon" class="w-4 h-4 translate-y-[3px] transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">

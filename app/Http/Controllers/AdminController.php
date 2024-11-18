@@ -74,11 +74,4 @@ class AdminController extends Controller
 
         return view('admin.data-presensi', compact('admin'));
     }
-
-    public function workHour()
-    {
-        $admin = Auth::guard('admin')->user();
-
-        return view('admin.work-hour', compact('admin'));
-    }
 }
