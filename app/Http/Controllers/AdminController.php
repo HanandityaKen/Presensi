@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
@@ -18,34 +19,52 @@ class AdminController extends Controller
     {
         $admin = Auth::guard('admin')->user();
 
-        return view('admin.crud-user', compact('admin'));
+        $users = DB::table('user')
+        ->join('role', 'user.role_id', '=', 'role.id')
+        ->select('user.*', 'role.name as role')
+        ->get();
+
+        return view('admin.crud-user', compact('admin', 'users'));
     }
 
     public function createUserView()
     {
         $admin = Auth::guard('admin')->user();
 
-        return view('admin.create-user', compact('admin'));
+        $roles = Role::all();
+
+        return view('admin.create-user', compact('admin', 'roles'));
     }
 
     public function createUser(Request $request)
     {
         $request->validate([
             'username' => 'required|string',
+            'role'  => 'required|integer',
             'password' => 'required|string',
         ]);
 
         User::create([
             'username' => $request->username,
+            'role_id'  => $request->role,
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->back()->with('success', 'User berhasil ditambahkan.');
+        return redirect()->route('data.user')->with('success', 'User berhasil ditambahkan.');
     }
 
     public function editUser()
     {
         return view('admin.edit-user');
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        $role->delete();
+
+        return redirect()->route('role.index')->with('success', 'Role berhasil dihapus.');
     }
 
     //Data Presensi
@@ -56,46 +75,10 @@ class AdminController extends Controller
         return view('admin.data-presensi', compact('admin'));
     }
 
-    //Role
-
-    public function crudRole()
+    public function workHour()
     {
         $admin = Auth::guard('admin')->user();
 
-        $roles = Role::all();
-
-        return view('admin.crud-role', compact('admin', 'roles'));
-    }
-
-    public function createRoleView()
-    {
-        $admin = Auth::guard('admin')->user();
-
-        $roles = Role::paginate(10);
-
-
-        return view('admin.create-role', compact('admin', 'roles'));
-    }
-
-    public function createRole(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string',
-        ]);
-
-        Role::create([
-            'name' => $request->name,
-        ]);
-
-        return redirect()->route('data.role.view')->with('success', 'Role berhasil ditambahkan.');
-    }
-
-    public function deleteRole($id)
-    {
-        $role = Role::findOrFail($id);
-
-        $role->delete();
-
-        return redirect()->route('data.role.view')->with('success', 'Role berhasil dihapus.');
+        return view('admin.work-hour', compact('admin'));
     }
 }

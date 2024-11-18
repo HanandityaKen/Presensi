@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -13,13 +15,11 @@ Route::post('/admin-login-proses', [AuthController::class, 'adminLoginProses'])-
 
 Route::get('/', [AuthController::class, 'showUserLoginForm'])->name('user.login');
 Route::post('/user-login-proses', [AuthController::class, 'userLoginProses'])->name('user.login.proses');
-
-Route::get('/data-user', [AdminController::class, 'crudUser'])->name('data.user');
 Route::get('/data-presensi', [AdminController::class, 'dataPresensi'])->name('data.presensi');
-Route::get('/create-user', [AdminController::class, 'createUserView'])->name('create.user.view');
-Route::post('/create-user-proses', [AdminController::class, 'createUser'])->name('create.user');
-Route::get('/edit-user', [AdminController::class, 'editUser'])->name('edit.user');
-Route::get('/data-role', [AdminController::class, 'crudRole'])->name('data.role.view');
-Route::get('/create-role', [AdminController::class, 'createRoleView'])->name('create.role.view');
-Route::post('/create-role-proses', [AdminController::class, 'createRole'])->name('create.role');
-Route::delete('/delete-role-proses/{id}', [AdminController::class, 'deleteRole'])->name('delete.role');
+Route::get('/jam-kerja', [AdminController::class, 'workHour'])->name('work.hour');
+
+//admin
+Route::prefix('admin')->as('admin.')->group(function () {
+  Route::resource('user', UserController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+  Route::resource('role', RoleController::class)->only(['index', 'create', 'store', 'destroy']);
+});
