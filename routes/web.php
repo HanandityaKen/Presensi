@@ -18,6 +18,8 @@ Route::get('/', [AuthController::class, 'showUserLoginForm'])->name('user.login'
 Route::post('/user-login-proses', [AuthController::class, 'userLoginProses'])->name('user.login.proses');
 
 Route::get('/data-presensi', [AdminController::class, 'dataPresensi'])->name('data.presensi');
+Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+Route::get('/presensi', [UserController::class, 'presensi'])->name('presensi');
 
 //admin
 Route::prefix('admin')->as('admin.')->group(function () {
