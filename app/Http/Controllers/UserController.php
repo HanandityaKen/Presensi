@@ -115,4 +115,14 @@ class UserController extends Controller
             return redirect()->route('admin.user.index')->with('success', 'User berhasil dihapus.');
         }
     }
+
+    public function dashboard()
+    {
+        return view('user.dashboard-user');
+    }
+
+    public function presensi()
+    {
+        return view('user.presensi');
+    }
 }
