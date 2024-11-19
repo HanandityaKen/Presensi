@@ -36,21 +36,32 @@
             </div>
 
             <!-- Kamera -->
-            <!-- <div class="mb-4">
+            <div class="mb-4" id="camera-foto">
                 <label class="block text-sm font-medium text-gray-700">Ambil Foto</label>
                 <div class="flex flex-col items-center">
-                    <video id="video" autoplay class="w-full h-64 bg-gray-200 rounded-md"></video>
-                    <button type="button" id="capture" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition">
-                        Ambil Foto
+                    <video id="video" autoplay class="w-auto h-64 bg-gray-200 rounded-md"></video>
+                    <div class="flex mt-4 space-x-2">
+                        <button type="button" id="capture" class="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition">
+                            Ambil Foto
+                        </button>
+                        <button type="button" id="upload" class="px-4 py-2 bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition">
+                            Upload Foto
+                        </button>
+                    </div>
+                    <canvas id="canvas" class="hidden w-auto h-64 bg-gray-200 rounded-md"></canvas>
+                    <button type="button" id="retake" class="hidden mt-4 px-4 py-2 bg-gray-500 text-white rounded-md shadow hover:bg-gray-600 transition">
+                        Ulangi Foto
                     </button>
-                    <canvas id="canvas" class="hidden w-full h-64 mt-4 bg-gray-200 rounded-md"></canvas>
                     <input type="hidden" id="foto" name="foto">
                 </div>
-            </div> -->
+            </div>
 
-            <div class="mb-4">
-                <label for="foto" class="block text-sm font-medium text-gray-700">Ambil Foto</label>
-                <input type="file" id="foto" name="foto" accept="image/*" capture="user" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="mb-4 hidden" id="upload-foto">
+                <label for="upload-foto" class="block text-sm font-medium text-gray-700">Ambil Foto</label>
+                <input type="file" id="upload-foto" name="foto" accept="image/*" capture="user" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="button" id="capture-foto-button" class="w-full px-4 py-2 mt-3 bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition">
+                    Ambil Foto
+                </button>
             </div>
 
             <!-- Lokasi -->
@@ -78,6 +89,92 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> -->
     <script>
+        $(document).ready(function () {
+            const video = $("#video")[0];
+            const canvas = $("#canvas")[0];
+            const fotoInput = $("#foto");
+            const captureButton = $("#capture");
+            const uploadButton = $("#upload");
+            const retakeButton = $("#retake");
+            let stream = null;
+
+            // Minta akses ke kamera
+            navigator.mediaDevices
+                .getUserMedia({ video: true })
+                .then(function (mediaStream) {
+                    stream = mediaStream;
+                    video.srcObject = stream;
+                })
+                .catch(function (error) {
+                    console.error("Kamera tidak dapat diakses: ", error);
+                    alert("Kamera tidak tersedia atau akses ditolak.");
+                });
+
+            // Ambil foto saat tombol ditekan
+            captureButton.click(function () {
+                const context = canvas.getContext("2d");
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                // Gambar frame dari video ke canvas
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Tampilkan hasil pada canvas
+                $(canvas).removeClass("hidden");
+                $(retakeButton).removeClass("hidden");
+                $(video).addClass("hidden");
+                $(captureButton).addClass("hidden");
+                $(uploadButton).addClass("hidden");
+
+                // Konversi gambar ke base64
+                const dataURL = canvas.toDataURL("image/png");
+
+                // Masukkan data gambar ke input hidden
+                fotoInput.val(dataURL);
+            });
+
+             // Ulangi foto saat tombol ditekan
+            retakeButton.click(function () {
+                $(canvas).addClass("hidden");
+                $(retakeButton).addClass("hidden");
+
+                $(video).removeClass("hidden");
+                $(captureButton).removeClass("hidden");
+                $(uploadButton).removeClass("hidden");
+
+                fotoInput.val("");
+            });
+
+            uploadButton.click(function () {
+                if (stream) {
+                    const tracks = stream.getTracks();
+                    tracks.forEach(track => track.stop()); // Hentikan semua track
+                }
+
+                $("#camera-foto").addClass("hidden");
+
+                $("#upload-foto").removeClass("hidden");
+            });
+
+            $('#capture-foto-button').click(function () {
+                $("#camera-foto").removeClass("hidden");
+
+                $("#upload-foto").addClass("hidden");
+
+                // Aktifkan kamera lagi
+                navigator.mediaDevices
+                    .getUserMedia({ video: true })
+                    .then(function (mediaStream) {
+                        stream = mediaStream; // Simpan stream lagi
+                        video.srcObject = stream;
+                    })
+                    .catch(function (error) {
+                        console.error("Kamera tidak dapat diakses: ", error);
+                        alert("Kamera tidak tersedia atau akses ditolak.");
+                    });
+            })
+        });
+
         // $(document).ready(function () {
         //     const $video = $('#video');
         //     const $canvas = $('#canvas');
@@ -95,7 +192,7 @@
         //             console.error('Gagal mengakses kamera:', err);
         //         });
 
-        //     // Ambil Foto
+        //      // Ambil Foto
         //     $captureButton.on('click', function () {
         //         // Set dimensi canvas sesuai video
         //         $canvas.attr({

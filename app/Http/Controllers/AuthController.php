@@ -30,7 +30,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return redirect()->intended('/user/dashboard');
+        return redirect()->intended('/dashboard');
     }
 
     public function showAdminLoginForm()
