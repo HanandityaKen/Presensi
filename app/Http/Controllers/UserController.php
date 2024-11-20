@@ -120,14 +120,4 @@ class UserController extends Controller
     {
         return view('user.dashboard-user');
     }
-
-    public function presensi()
-    {
-        return view('user.presensi');
-    }
-
-    public function profileUser()
-    {
-        return view('user.profile-user');
-    }
 }

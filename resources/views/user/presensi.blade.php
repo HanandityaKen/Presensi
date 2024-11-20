@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presensi</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     @vite('resources/css/app.css')
 </head>
 <body class="bg-white">
@@ -14,25 +15,34 @@
             <p class="text-gray-600">Silakan isi detail presensi Anda di bawah ini.</p>
         </div>
 
-        <!-- Form -->
-        <form action="/submit-presensi" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
-            @csrf
-            <!-- Tanggal -->
-            <div class="mb-4">
-                <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal</label>
-                <input type="date" id="tanggal" name="tanggal" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
+        @endif
+
+        <!-- Form -->
+        <form action="{{route('presensi.store')}}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+            @csrf
+            <input type="hidden" id="user_id" name="user_id" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{$user->id}}">
 
             <!-- Jam Masuk -->
             <div class="mb-4">
                 <label for="jam_masuk" class="block text-sm font-medium text-gray-700">Jam Masuk</label>
-                <input type="time" id="jam_masuk" name="jam_masuk" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="time" id="jam_masuk" name="jam_masuk" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('H:i') }}" disabled>
             </div>
 
-            <!-- Jam Keluar -->
             <div class="mb-4">
-                <label for="jam_keluar" class="block text-sm font-medium text-gray-700">Jam Keluar</label>
-                <input type="time" id="jam_keluar" name="jam_keluar" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="work-place" class="block text-sm font-medium text-gray-700">Tempat Kerja</label>
+                <select id="work-place" name="work_place" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Pilih tempat kerja" required>
+                    <option value="" disabled selected>Pilih Tempat Kerja</option>
+                    <option value="home">WFH</option>
+                    <option value="office">Kantor</option>
+                </select>
             </div>
 
             <!-- Kamera -->
@@ -52,29 +62,24 @@
                     <button type="button" id="retake" class="hidden mt-4 px-4 py-2 bg-gray-500 text-white rounded-md shadow hover:bg-gray-600 transition">
                         Ulangi Foto
                     </button>
-                    <input type="hidden" id="foto" name="foto">
+                    {{-- <input type="hidden" id="foto-input" name="foto" required> --}}
+                    <input type="file" id="foto-input" name="foto" class="hidden" accept="image/png">
                 </div>
             </div>
 
             <div class="mb-4 hidden" id="upload-foto">
-                <label for="upload-foto" class="block text-sm font-medium text-gray-700">Ambil Foto</label>
-                <input type="file" id="upload-foto" name="foto" accept="image/*" capture="user" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="upload-foto-input" class="block text-sm font-medium text-gray-700">Ambil Foto</label>
+                <input type="file" id="upload-foto-input" name="foto" accept="image/*" capture="user" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <button type="button" id="capture-foto-button" class="w-full px-4 py-2 mt-3 bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition">
                     Ambil Foto
                 </button>
             </div>
 
-            <!-- Lokasi -->
             <div class="mb-4">
                 <label for="lokasi" class="block text-sm font-medium text-gray-700">Lokasi</label>
-                <input type="text" id="lokasi" name="lokasi" required placeholder="Masukkan lokasi Anda" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="lokasi" name="lokasi" placeholder="Kordinat Lokasi" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
+                <div id="map" class="w-full h-96 mt-4"></div>
             </div>
-
-            <!-- <div class="mb-4">
-                <label for="lokasi" class="block text-sm font-medium text-gray-700">Lokasi</label>
-                <input type="text" id="lokasi" name="lokasi" readonly placeholder="Klik pada peta untuk memilih lokasi" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <div id="map"></div>
-            </div> -->
 
             <!-- Button Submit -->
             <div class="flex justify-end">
@@ -88,14 +93,15 @@
     <!-- Script -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         $(document).ready(function () {
-            const video = $("#video")[0];
-            const canvas = $("#canvas")[0];
-            const fotoInput = $("#foto");
-            const captureButton = $("#capture");
-            const uploadButton = $("#upload");
-            const retakeButton = $("#retake");
+            const video = $('#video')[0];
+            const canvas = $('#canvas')[0];
+            const fotoInput = $('#foto-input');
+            const captureButton = $('#capture');
+            const uploadButton = $('#upload');
+            const retakeButton = $('#retake');
             let stream = null;
 
             // Minta akses ke kamera
@@ -120,27 +126,47 @@
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
                 // Tampilkan hasil pada canvas
-                $(canvas).removeClass("hidden");
-                $(retakeButton).removeClass("hidden");
-                $(video).addClass("hidden");
-                $(captureButton).addClass("hidden");
-                $(uploadButton).addClass("hidden");
+                $(canvas).removeClass('hidden');
+                $(retakeButton).removeClass('hidden');
+                $(video).addClass('hidden');
+                $(captureButton).addClass('hidden');
+                $(uploadButton).addClass('hidden');
 
-                // Konversi gambar ke base64
-                const dataURL = canvas.toDataURL("image/png");
+                canvas.toBlob(function(blob) {
+                    var dataTransfer = new DataTransfer();
+                    var file = new File([blob], 'foto.png', { type: 'image/png' });
 
-                // Masukkan data gambar ke input hidden
-                fotoInput.val(dataURL);
+                    dataTransfer.items.add(file);
+                    fotoInput[0].files = dataTransfer.files;
+
+                    console.log(fotoInput[0].files);
+                })
+
+                if (stream) {
+                    const tracks = stream.getTracks();
+                    tracks.forEach(track => track.stop()); // Hentikan semua track
+                }
             });
 
              // Ulangi foto saat tombol ditekan
             retakeButton.click(function () {
-                $(canvas).addClass("hidden");
-                $(retakeButton).addClass("hidden");
+                navigator.mediaDevices
+                    .getUserMedia({ video: true })
+                    .then(function (mediaStream) {
+                        stream = mediaStream; // Simpan stream lagi
+                        video.srcObject = stream;
+                    })
+                    .catch(function (error) {
+                        console.error("Kamera tidak dapat diakses: ", error);
+                        alert("Kamera tidak tersedia atau akses ditolak.");
+                    });
 
-                $(video).removeClass("hidden");
-                $(captureButton).removeClass("hidden");
-                $(uploadButton).removeClass("hidden");
+                $(canvas).addClass('hidden');
+                $(retakeButton).addClass('hidden');
+
+                $(video).removeClass('hidden');
+                $(captureButton).removeClass('hidden');
+                $(uploadButton).removeClass('hidden');
 
                 fotoInput.val("");
             });
@@ -151,15 +177,23 @@
                     tracks.forEach(track => track.stop()); // Hentikan semua track
                 }
 
-                $("#camera-foto").addClass("hidden");
+                $('#camera-foto').addClass('hidden');
 
-                $("#upload-foto").removeClass("hidden");
+                $('#upload-foto').removeClass('hidden');
+
+                fotoInput.removeAttr('required');
+
+                $('#upload-foto-input').attr('required', 'required');
             });
 
             $('#capture-foto-button').click(function () {
-                $("#camera-foto").removeClass("hidden");
+                $('#camera-foto').removeClass('hidden');
 
-                $("#upload-foto").addClass("hidden");
+                $('#upload-foto').addClass('hidden');
+
+                $('#upload-foto-input').removeAttr('required');
+
+                fotoInput.attr('required', 'required')
 
                 // Aktifkan kamera lagi
                 navigator.mediaDevices
@@ -175,70 +209,37 @@
             })
         });
 
-        // $(document).ready(function () {
-        //     const $video = $('#video');
-        //     const $canvas = $('#canvas');
-        //     const $captureButton = $('#capture');
-        //     const $fotoInput = $('#foto');
-        //     const context = $canvas[0].getContext('2d');
+        $(document).ready(function () {
+            var map = L.map('map').setView([51.505, -0.09], 19);
 
-        //     // Akses Kamera
-        //     navigator.mediaDevices.getUserMedia({ video: true })
-        //         .then(function (stream) {
-        //             $video[0].srcObject = stream;
-        //             $video[0].play();
-        //         })
-        //         .catch(function (err) {
-        //             console.error('Gagal mengakses kamera:', err);
-        //         });
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
 
-        //      // Ambil Foto
-        //     $captureButton.on('click', function () {
-        //         // Set dimensi canvas sesuai video
-        //         $canvas.attr({
-        //             width: $video[0].videoWidth,
-        //             height: $video[0].videoHeight
-        //         });
+            // Aktifkan geolocation untuk menemukan lokasi pengguna
+            map.locate({ watch: true, maxZoom: 19, enableHighAccuracy: true });
 
-        //         // Gambar video ke canvas
-        //         context.drawImage($video[0], 0, 0, $canvas.width(), $canvas.height());
+            // Event ketika lokasi ditemukan
+            map.on('locationfound', function (e) {
+                var userLat = e.latitude;
+                var userLng = e.longitude;
 
-        //         // Tampilkan pratinjau
-        //         $canvas.removeClass('hidden');
+                $('#lokasi').val(userLat + ", " + userLng);
 
-        //         // Konversi gambar ke Base64
-        //         $fotoInput.val($canvas[0].toDataURL('image/png'));
-        //     });
-        // });
+                // Tambahkan marker di lokasi pengguna
+                L.marker([userLat, userLng])
+                    .addTo(map)
+                    .bindPopup("Lokasi Anda saat ini")
+                    .openPopup();
+            });
 
-          // $(document).ready(function () {
-          //     // Inisialisasi peta
-          //     const map = L.map('map').setView([-6.200000, 106.816666], 13); // Koordinat default (Jakarta)
-
-          //     // Tambahkan layer peta dari OpenStreetMap
-          //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          //         attribution: '© OpenStreetMap contributors'
-          //     }).addTo(map);
-
-          //     // Marker untuk menunjukkan lokasi yang dipilih
-          //     let marker;
-
-          //     // Tambahkan event listener untuk mengambil lokasi ketika peta diklik
-          //     map.on('click', function (e) {
-          //         const { lat, lng } = e.latlng;
-
-          //         // Jika marker sudah ada, pindahkan ke lokasi baru
-          //         if (marker) {
-          //             marker.setLatLng(e.latlng);
-          //         } else {
-          //             // Tambahkan marker ke lokasi yang dipilih
-          //             marker = L.marker(e.latlng).addTo(map);
-          //         }
-
-          //         // Tampilkan koordinat di input lokasi
-          //         $('#lokasi').val(`${lat}, ${lng}`);
-          //     });
-          // });
+            // Event ketika lokasi tidak ditemukan atau gagal
+            map.on('locationerror', function (e) {
+                alert("Tidak dapat menemukan lokasi Anda. Pastikan GPS atau izin lokasi aktif.");
+                console.error(e.message);
+            });
+        })
 
     </script>
 
