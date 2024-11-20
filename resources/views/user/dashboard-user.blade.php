@@ -12,7 +12,7 @@
     <div class="container mx-auto p-4">
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h1 class="text-xl font-semibold text-blue-500">Halo, Hananditya</h1>
+                <h1 class="text-xl font-semibold text-blue-500">Halo, {{$user->username}}</h1>
                 <p class="text-gray-500">Magang</p>
             </div>
             <img src="https://via.placeholder.com/50" alt="Profile" class="w-12 h-12 rounded-full">
@@ -23,6 +23,20 @@
             <a href="/presensi" class="px-4 py-2 border border-dashed border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition">
                 <i class="fas fa-clipboard-list mr-2"></i>Presensi Sekarang
             </a>
+        </div>
+
+        <div class="w-full">
+            @if (session('success'))
+                <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div>
+                        <span class="font-medium">{{ session('success') }}</span>
+                    </div>
+                </div>
+            @endif
         </div>
 
         <!-- Card Presensi Hari Ini -->
