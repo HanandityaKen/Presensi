@@ -74,4 +74,11 @@ class AdminController extends Controller
 
         return view('admin.data-presensi', compact('admin'));
     }
+
+    public function profileAdmin()
+    {
+        $admin = Auth::guard('admin')->user();
+
+        return view('admin.profile-admin', compact('admin'));
+    }
 }

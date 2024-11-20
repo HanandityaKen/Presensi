@@ -20,6 +20,8 @@ Route::post('/user-login-proses', [AuthController::class, 'userLoginProses'])->n
 Route::get('/data-presensi', [AdminController::class, 'dataPresensi'])->name('data.presensi');
 Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 Route::get('/presensi', [UserController::class, 'presensi'])->name('presensi');
+Route::get('/profile-user', [UserController::class, 'profileUser'])->name('profile.user');
+Route::get('/profile-admin', [AdminController::class, 'profileAdmin'])->name('profile.admin');
 
 //admin
 Route::prefix('admin')->as('admin.')->group(function () {
