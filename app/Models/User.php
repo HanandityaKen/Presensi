@@ -48,4 +48,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+     // Menambahkan metode relasi dengan Role
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 }

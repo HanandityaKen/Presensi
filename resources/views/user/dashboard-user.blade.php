@@ -13,9 +13,33 @@
         <div class="flex items-center justify-between mb-6">
             <div>
                 <h1 class="text-xl font-semibold text-blue-500">Halo, {{$user->username}}</h1>
-                <p class="text-gray-500">Magang</p>
+                <p class="text-gray-500">{{$user->role->name}}</p>
             </div>
-            <img src="https://via.placeholder.com/50" alt="Profile" class="w-12 h-12 rounded-full">
+            <!-- Profile Image and Dropdown -->
+            <div class="flex items-center">
+                <img src="https://via.placeholder.com/50" alt="Profile" class="w-12 h-12 rounded-full">
+                <!-- Dropdown Button -->
+                <button id="dropdownToggle" class="ml-2 p-2 text-gray-600 hover:bg-gray-200 rounded-full focus:outline-none">
+                    <svg id="dropdownIcon" class="w-4 h-4 translate-y-[2px] transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path fill="currentColor" d="M143 352.3L7 216.3C-2.3 207-2.3 192.9 7 183.6l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0L160 258.7l96.5-96.7c9.4-9.4 24.6-9.4 33.9 0L313 183.6c9.4 9.4 9.4 24.6 0 33.9L177 352.3c-9.4 9.4-24.6 9.4-34 0z"/>
+                    </svg>
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="dropdownMenu" class="hidden absolute right-[115px] top-[80px] w-48 bg-white border border-gray-200 rounded-lg shadow-md">
+                    <a href="/akun" class="flex items-center px-4 py-2 text-gray-500 hover:bg-gray-100">
+                        <i class="fas fa-user w-5 h-5 mr-3"></i>
+                        Akun
+                    </a>
+                    <form method="POST" action="{{ route('logout.user') }}">
+                        @csrf
+                        <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100">
+                            <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
+                            Logout
+                        </button>
+                    </form>
+                </div>
+
+            </div>
         </div>
 
         <!-- Button ke Halaman Form Presensi -->
@@ -114,5 +138,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('dropdownToggle').addEventListener('click', function () {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 </html>

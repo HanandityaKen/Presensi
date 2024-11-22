@@ -13,7 +13,7 @@
         {{-- <img src="https://via.placeholder.com/30" alt="User Avatar" class="rounded-full w-8 h-8"> --}}
         <button id="dropdownToggle" class="flex items-center space-x-2 text-gray-500 hover:text-gray-700">
             <span>{{$admin->display_name}}</span>
-            <svg id="dropdownIcon" class="w-4 h-4 translate-y-[3px] transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+            <svg id="dropdownIcon" class="w-4 h-4 translate-y-[2px] transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                 <path fill="currentColor" d="M143 352.3L7 216.3C-2.3 207-2.3 192.9 7 183.6l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0L160 258.7l96.5-96.7c9.4-9.4 24.6-9.4 33.9 0L313 183.6c9.4 9.4 9.4 24.6 0 33.9L177 352.3c-9.4 9.4-24.6 9.4-34 0z"/>
             </svg>
         </button>
@@ -23,7 +23,7 @@
                 <i class="fas fa-user w-5 h-5 mr-3"></i>
                 Akun
             </a>
-            <form method="POST" action="">
+            <form method="POST" action="{{ route('logout.admin') }}">
                 @csrf
                 <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100">
                     <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
