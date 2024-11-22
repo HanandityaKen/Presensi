@@ -9,10 +9,24 @@ use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class PresenceController extends Controller
 {
+    //admin
+    public function index()
+    {
+        $admin = Auth::guard('admin')->user();
+
+        $presences = Presence::all();
+
+        return view('admin.data-presensi', compact('admin', 'presences'));
+    }
+
+    //user
+
     public function dashboard()
     {
         $user = Auth::guard('user')->user();
@@ -33,7 +47,7 @@ class PresenceController extends Controller
         $request->validate([
             'user_id' => 'required|string|exists:user,id',
             'work_place' => 'required|in:home,office',
-            'foto' => 'required|mimes:jpeg,png',
+            'foto' => 'required',
             'lokasi' => [      
                 'required',
                 'regex:/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s?[-+]?((1[0-7]\d)|(\d{1,2}))(\.\d+)?$/',
@@ -47,9 +61,25 @@ class PresenceController extends Controller
             $uuid = Str::uuid()->toString(); 
             $filename = $uuid . '.' . $extension; 
         
-            $path = $file->storeAs('public/foto_presensi', $filename); 
+            $path = Storage::disk('public')->putFileAs('foto_presensi', $file, $filename);
             
             $foto = $path;
+        } elseif ($request->filled('foto') && preg_match('/^data:image\/(\w+);base64,/', $request->foto, $matches)) {
+            $extension = strtolower($matches[1]); // Ekstensi file dari Base64
+            $uuid = Str::uuid()->toString();
+            $filename = $uuid . '.' . $extension;
+
+            // Decode Base64 string
+            $base64Image = substr($request->foto, strpos($request->foto, ',') + 1);
+            $binaryImage = base64_decode($base64Image);
+
+            // Simpan file hasil decode
+            $path = 'foto_presensi/' . $filename;
+            Storage::disk('public')->put($path, $binaryImage);
+
+            $foto = $path;
+        } else {
+            return back()->withErrors(['foto' => 'Gambar tidak valid']);
         }
         
         Presence::create([

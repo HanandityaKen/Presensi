@@ -23,7 +23,7 @@
                 <i class="fas fa-user w-5 h-5 mr-3"></i>
                 Akun
             </a>
-            <form method="POST" action="{{ route('logout.admin') }}">
+            <form method="POST" action="{{ route('admin.logout.admin') }}">
                 @csrf
                 <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100">
                     <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
