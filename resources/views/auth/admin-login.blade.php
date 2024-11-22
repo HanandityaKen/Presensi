@@ -6,7 +6,6 @@
   <title>Login Admin</title>
   @vite('resources/css/app.css')
   <!-- FontAwesome Icons CDN -->
-  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-white flex justify-center items-center min-h-screen">
   <!-- Centered Login Form -->

@@ -6,7 +6,8 @@
   <title>Login</title>
   @vite('resources/css/app.css')
   <!-- FontAwesome Icons CDN -->
-  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <!-- <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 </head>
 <body class="bg-white flex justify-center items-center min-h-screen">
   <!-- Centered Login Form -->
@@ -32,10 +33,10 @@
     <div class="mt-8 text-center">
       <p>Atau Masuk dengan platform sosial</p>
       <div class="flex justify-center space-x-6 mt-4">
-        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-google"></i></a>
-        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-linkedin-in"></i></a>
+        <button class="border border-gray-300 text-gray-700 font-bold py-2 px-4 rounded-2xl w-full flex items-center justify-center hover:bg-gray-400 hover:text-white">
+            <i class="fab fa-google mr-2"></i> <!-- Google icon -->
+            Login dengan Google
+        </button>
       </div>
     </div>
   </div>

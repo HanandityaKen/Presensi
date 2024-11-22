@@ -120,4 +120,40 @@ class UserController extends Controller
     {
         return view('user.dashboard-user');
     }
+
+    public function profileUser()
+    {
+        $user = Auth::guard('user')->user();
+
+        return view('user.profile-user', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:255|unique:user,username,' . Auth::guard('user')->user()->id,
+            'old-password' => 'required|string',
+            'new-password' => 'nullable|string|confirmed',
+        ]);
+
+        $user = Auth::guard('user')->user();
+
+        // Verifikasi password lama
+        if (!Hash::check($request->input('old-password'), $user->password)) {
+            return back()->withErrors(['old-password' => 'Password lama tidak sesuai.']);
+        }
+
+        // Update profil
+        $user->username = $request->input('username');
+
+        // Jika password baru diisi, lakukan update
+        if ($request->filled('new-password')) {
+            $user->password = Hash::make($request->input('new-password'));
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Profil berhasil diperbarui.');
+    }
+
 }
