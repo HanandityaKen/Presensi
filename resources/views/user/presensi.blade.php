@@ -15,20 +15,28 @@
             <p class="text-gray-600">Silakan isi detail presensi Anda di bawah ini.</p>
         </div>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @error('foto')
+            <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">{{$message}}</span>
+                </div>
             </div>
-        @endif
+        @enderror
+        
 
         <!-- Form -->
         <form action="{{route('presensi.store')}}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
             @csrf
             <input type="hidden" id="user_id" name="user_id" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{$user->id}}">
+
+            <div class="mb-4">
+                <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal</label>                
+                <input type="text" id="tanggal" name="tanggal" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('d F Y') }}" disabled>
+            </div>
 
             <!-- Jam Masuk -->
             <div class="mb-4">
@@ -62,8 +70,7 @@
                     <button type="button" id="retake" class="hidden mt-4 px-4 py-2 bg-gray-500 text-white rounded-md shadow hover:bg-gray-600 transition">
                         Ulangi Foto
                     </button>
-                    {{-- <input type="hidden" id="foto-input" name="foto" required> --}}
-                    <input type="file" id="foto-input" name="foto" class="hidden" accept="image/png">
+                    <input type="hidden" id="foto-input" name="foto" class="" accept="image/png">
                 </div>
             </div>
 
@@ -92,7 +99,6 @@
 
     <!-- Script -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         $(document).ready(function () {
@@ -132,15 +138,22 @@
                 $(captureButton).addClass('hidden');
                 $(uploadButton).addClass('hidden');
 
-                canvas.toBlob(function(blob) {
-                    var dataTransfer = new DataTransfer();
-                    var file = new File([blob], 'foto.png', { type: 'image/png' });
 
-                    dataTransfer.items.add(file);
-                    fotoInput[0].files = dataTransfer.files;
+                // Konversi canvas ke Base64
+                const base64Image = canvas.toDataURL("image/png");
 
-                    console.log(fotoInput[0].files);
-                })
+                fotoInput.val(base64Image);
+
+                // canvas.toBlob(function(blob) {
+                //     var dataTransfer = new DataTransfer();
+                //     var file = new File([blob], 'foto.png', { type: 'image/png' });
+
+                //     dataTransfer.items.add(file);
+                //     fotoInput[0].files = dataTransfer.files;
+
+                //     console.log(fotoInput[0].files);
+
+                // })
 
                 if (stream) {
                     const tracks = stream.getTracks();

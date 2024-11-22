@@ -33,6 +33,17 @@ class AuthController extends Controller
         return redirect()->intended('/dashboard');
     }
 
+    public function logoutUser(Request $request)
+    {
+        Auth::guard('user')->logout();
+
+        $request->session()->invalidate(); 
+        $request->session()->regenerateToken(); // Regenerasi token CSRF
+    
+        return redirect()->route('user.login');
+    }
+
+
     public function showAdminLoginForm()
     {
         return view('auth.admin-login');
@@ -58,29 +69,11 @@ class AuthController extends Controller
 
     public function logoutAdmin(Request $request)
     {
-        // Melakukan logout berdasarkan guard yang sedang aktif (admin atau user)
-        Auth::guard('admin')->logout();  // Logout untuk admin
-        // Auth::guard('user')->logout();   // Logout untuk user
+        Auth::guard('admin')->logout();
 
-        // Menghapus sesi yang mungkin ada
-        $request->session()->invalidate();
-        // $request->session()->regenerateToken();
-
-        // Mengarahkan kembali ke halaman login
-        return redirect('/admin');  // Sesuaikan dengan rute login yang diinginkan
-    }
-
-    public function logoutUser(Request $request)
-    {
-        // Melakukan logout berdasarkan guard yang sedang aktif (admin atau user)
-        // Auth::guard('admin')->logout();  // Logout untuk admin
-        Auth::guard('user')->logout();   // Logout untuk user
-
-        // Menghapus sesi yang mungkin ada
-        $request->session()->invalidate();
-        // $request->session()->regenerateToken();
-
-        // Mengarahkan kembali ke halaman login
-        return redirect('/');  // Sesuaikan dengan rute login yang diinginkan
+        $request->session()->invalidate(); 
+        $request->session()->regenerateToken(); // Regenerasi token CSRF
+    
+        return redirect()->route('admin.login');
     }
 }
