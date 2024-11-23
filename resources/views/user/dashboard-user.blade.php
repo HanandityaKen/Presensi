@@ -66,7 +66,7 @@
         <!-- Card Presensi Hari Ini -->
         <div class="bg-blue-500 p-4 rounded-lg shadow text-white mb-6">
             <div class="flex items-center justify-between">
-                <p class="text-lg font-semibold"><i class="fas fa-calendar-alt mr-2"></i>Hari ini, 18 Nov 2024</p>
+                <p class="text-lg font-semibold"><i class="fas fa-calendar-alt mr-2"></i>Hari ini, {{now()->format('d F Y')}}</p>
             </div>
             <div class="flex justify-between mt-4">
                 <div>
@@ -86,8 +86,8 @@
         <div class="bg-white p-4 rounded-lg shadow mb-6">
             <div class="flex justify-between items-center mb-4">
                 <p class="font-semibold text-gray-600">Riwayat Presensi</p>
-              <!-- <a href="#" class="px-3 py-2 border border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white">Lihat Semua</a> -->
-              <a href="#" class="px-3 py-2 border border-dashed border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white">Lihat Semua</a>
+                <!-- <a href="#" class="px-3 py-2 border border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white">Lihat Semua</a> -->
+                <a href="#" class="px-3 py-2 border border-dashed border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white">Lihat Semua</a>
             </div>
             <div class="space-y-4">
                 <!-- Card untuk Riwayat Presensi -->
