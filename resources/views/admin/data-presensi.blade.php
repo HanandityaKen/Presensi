@@ -27,7 +27,22 @@
                         </th>
                         <th>
                             <span class="flex items-center">
-                                Foto
+                                Jam Masuk
+                            </span>
+                        </th>
+                        <th>
+                            <span class="flex items-center">
+                                Foto Masuk
+                            </span>
+                        </th>
+                        <th>
+                            <span class="flex items-center">
+                                Jam Keluar
+                            </span>
+                        </th>
+                        <th>
+                            <span class="flex items-center">
+                                Foto Keluar
                             </span>
                         </th>
                         <th>
@@ -53,9 +68,13 @@
                             <td>{{$index + 1}}</td>
                             <td>{{$presence->user->username}}</td>
                             <td>{{$presence->location}}</td>
-                            {{-- <td>{{$presence->image_url}}</td> --}}
+                            <td>{{$presence->clock_in_time}}</td>
                             <td>
-                                <img src="{{ asset('storage/' . $presence->image_url) }}" alt="Image" width="100">
+                                <img src="{{ asset('storage/' . $presence->image_url_in) }}" alt="Image" width="100">
+                            </td>
+                            <td>{{$presence->clock_in_out ?? '-- : --'}}</td>
+                            <td>
+                                <img src="{{ asset('storage/' . $presence->image_url_out) }}" alt="Image" width="100">
                             </td>
                             <td>{{$presence->presence_status}}</td>
                             <td>{{$presence->work_place}}</td>

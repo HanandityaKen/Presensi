@@ -115,7 +115,7 @@
                         <div>
                             <p class="text-sm text-gray-500">Masuk</p>
                             <p class="font-semibold">
-                                {{ \Carbon\Carbon::parse($presence->create_at)->format('H:i') }}
+                                {{ \Carbon\Carbon::parse($presence->clock_in_time)->format('H:i') }}
                             </p>
                         </div>
                         <div>
