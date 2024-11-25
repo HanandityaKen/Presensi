@@ -31,7 +31,11 @@ class PresenceController extends Controller
     {
         $user = Auth::guard('user')->user();
 
-        return view('user.dashboard-user', compact('user'));
+        $presences = $user->presences()->orderBy('id', 'desc')->take(5)->get();
+
+        $latestPresence = $user->presences()->orderBy('id', 'desc')->first();
+
+        return view('user.dashboard-user', compact('user','presences', 'latestPresence'));
     }
 
 
@@ -91,5 +95,22 @@ class PresenceController extends Controller
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Anda sudah melakukan presensi');
+    }
+
+    public function clocked_out(Request $request)
+    {
+        $user = Auth::guard('user')->user();
+        $presence = $user->presences()->orderBy('id', 'desc')->first();
+
+        if ($presence && $presence->presence_status === 'clocked_in') {
+            $presence->update(['presence_status' => 'clocked_out']);
+        }
+
+        Auth::guard('user')->logout();
+
+        $request->session()->invalidate(); 
+        $request->session()->regenerateToken();
+
+        return redirect()->route('user.login');
     }
 }

@@ -19,10 +19,7 @@ class UserController extends Controller
     {
         $admin = Auth::guard('admin')->user();
 
-        $users = DB::table('user')
-        ->join('role', 'user.role_id', '=', 'role.id')
-        ->select('user.*', 'role.name as role')
-        ->get();
+        $users = User::with('role')->get();
 
         return view('admin.crud-user', compact('admin', 'users'));
     }
@@ -66,11 +63,7 @@ class UserController extends Controller
     {
         $admin = Auth::guard('admin')->user();
 
-        $user = DB::table('user')
-        ->join('role', 'user.role_id', '=', 'role.id')
-        ->select('user.*', 'role.name as role')
-        ->where('user.id', $id)
-        ->first();
+        $user = User::with('role')->findOrFail($id);
 
         $roles = Role::all();
 

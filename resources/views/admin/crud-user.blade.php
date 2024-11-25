@@ -53,7 +53,7 @@
                         <tr>
                             <td>{{$index + 1}}</td>
                             <td>{{$user->username}}</td>
-                            <td>{{$user->role}}</td>
+                            <td>{{$user->role->name}}</td>
                             <td>
                                 <a href="{{route('admin.user.edit', $user->id)}}">
                                     <button class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 ml-2">

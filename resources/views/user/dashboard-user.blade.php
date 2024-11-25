@@ -43,11 +43,24 @@
         </div>
 
         <!-- Button ke Halaman Form Presensi -->
-        <div class="mb-6">
-            <a href="/presensi" class="px-4 py-2 border border-dashed border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition">
-                <i class="fas fa-clipboard-list mr-2"></i>Presensi Sekarang
-            </a>
-        </div>
+        @if (!$latestPresence || $latestPresence->presence_status !== 'clocked_in')
+            <div class="mb-6">
+                <a href="/presensi" class="px-4 py-2 border border-dashed border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition">
+                    <i class="fas fa-clipboard-list mr-2"></i>Presensi Sekarang
+                </a>
+            </div>
+        @endif
+
+        @if ($latestPresence && $latestPresence->presence_status === 'clocked_in')
+            <form id="clockOutForm" action="{{ route('clocked_out.user') }}" method="POST">
+                @csrf
+                <div class="mb-6">
+                    <a href="javascript:void(0);" onclick="document.getElementById('clockOutForm').submit();" class="px-4 py-2 border border-dashed border-red-500 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition">
+                        <i class="fas fa-clipboard-list mr-2"></i> Keluar
+                    </a>
+                </div>
+            </form>
+        @endif
 
         <div class="w-full">
             @if (session('success'))
@@ -71,7 +84,13 @@
             <div class="flex justify-between mt-4">
                 <div>
                     <p class="text-sm">Masuk</p>
-                    <p class="text-2xl font-bold">08:04</p>
+                    <p class="text-2xl font-bold">
+                        @if($latestPresence && $latestPresence->presence_status === 'clocked_in')
+                            {{ \Carbon\Carbon::parse($latestPresence->create_at)->format('H:i') }}
+                        @else
+                            -- : --
+                        @endif
+                    </p>
                 </div>
                 <div class="border-l border-white h-10 lg:border-none"></div>
                 <div>
@@ -91,50 +110,28 @@
             </div>
             <div class="space-y-4">
                 <!-- Card untuk Riwayat Presensi -->
-                <div class="bg-gray-50 p-4 rounded-lg shadow flex justify-between items-center mb-6">
-                    <div>
-                        <p class="text-sm text-gray-500">Masuk</p>
-                        <p class="font-semibold">08:04</p>
+                @foreach ($presences as $presence)
+                    <div class="bg-gray-50 p-4 rounded-lg shadow flex justify-between items-center mb-6">
+                        <div>
+                            <p class="text-sm text-gray-500">Masuk</p>
+                            <p class="font-semibold">
+                                {{ \Carbon\Carbon::parse($presence->create_at)->format('H:i') }}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Keluar</p>
+                            <p class="font-semibold">
+                                -- : --
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Tanggal</p>
+                            <p class="font-semibold">
+                                {{ \Carbon\Carbon::parse($presence->create_at)->isoFormat('ddd, D MMM YYYY') }}
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Keluar</p>
-                        <p class="font-semibold">-- : --</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Tanggal</p>
-                        <p class="font-semibold">Sen, 18 Nov 2024</p>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 p-4 rounded-lg shadow flex justify-between items-center mb-6">
-                    <div>
-                        <p class="text-sm text-gray-500">Masuk</p>
-                        <p class="font-semibold">07:45</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Keluar</p>
-                        <p class="font-semibold">17:01</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Tanggal</p>
-                        <p class="font-semibold">Jum, 15 Nov 2024</p>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 p-4 rounded-lg shadow flex justify-between items-center mb-6">
-                    <div>
-                        <p class="text-sm text-gray-500">Masuk</p>
-                        <p class="font-semibold">07:42</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Keluar</p>
-                        <p class="font-semibold">16:32</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Tanggal</p>
-                        <p class="font-semibold">Kam, 14 Nov 2024</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

@@ -20,6 +20,7 @@ Route::middleware(['user'])->group(function () {
   Route::get('/dashboard', [PresenceController::class, 'dashboard'])->name('dashboard');
   Route::get('/presensi', [PresenceController::class, 'presenceForm'])->name('presensi');
   Route::post('/presensi-store', [PresenceController::class, 'presenceProses'])->name('presensi.store');
+  Route::post('/clocked_out', [PresenceController::class, 'clocked_out'])->name('clocked_out.user');
   Route::get('/akun', [UserController::class, 'profileUser'])->name('profile.user');
   Route::post('/akun-proses', [UserController::class, 'updateProfile'])->name('profile.update');
   Route::post('/logout', [AuthController::class, 'logoutUser'])->name('logout.user');
@@ -29,7 +30,7 @@ Route::middleware(['user'])->group(function () {
 //admin
 Route::prefix('admin')->as('admin.')->middleware('admin')->group(function () {
   Route::get('/profile-admin', [AdminController::class, 'profileAdmin'])->name('profile.admin');
-  Route::post('/profile-admin-proses', [AdminController::class, 'updateProfile'])->name('profile.admin.update');
+  Route::post('/profile-admin-proses', [AdminController::class, 'updateProfile'])->name('profile.update');
   Route::resource('user', UserController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
   Route::resource('role', RoleController::class)->only(['index', 'create', 'store', 'destroy']);
   Route::resource('work-hour', WorkHourController::class)->only(['index', 'edit', 'update']);
