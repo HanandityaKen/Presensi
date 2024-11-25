@@ -35,7 +35,7 @@ class PresenceController extends Controller
 
         $latestPresence = $user->presences()->orderBy('id', 'desc')->first();
 
-        return view('user.dashboard-user', compact('user','presences', 'latestPresence'));
+        return view('user.dashboard-user', compact('user', 'presences', 'latestPresence'));
     }
 
 
@@ -52,6 +52,7 @@ class PresenceController extends Controller
             'user_id' => 'required|string|exists:user,id',
             'work_place' => 'required|in:home,office',
             'foto' => 'required',
+            'clock_in_time' => 'required|date_format:H:i',
             'lokasi' => [      
                 'required',
                 'regex:/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s?[-+]?((1[0-7]\d)|(\d{1,2}))(\.\d+)?$/',
@@ -90,7 +91,8 @@ class PresenceController extends Controller
             'user_id' => $request->user_id,
             'location' => $request->lokasi,
             'presence_status' => 'clocked_in',
-            'image_url' => $foto,
+            'image_url_in' => $foto,
+            'clock_in_time' => $request->clock_in_time,
             'work_place' => $request->work_place,
         ]);
 

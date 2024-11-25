@@ -41,7 +41,7 @@
             <!-- Jam Masuk -->
             <div class="mb-4">
                 <label for="jam_masuk" class="block text-sm font-medium text-gray-700">Jam Masuk</label>
-                <input type="time" id="jam_masuk" name="jam_masuk" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('H:i') }}" disabled>
+                <input type="time" id="jam_masuk" name="clock_in_time" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('H:i') }}" readonly>
             </div>
 
             <div class="mb-4">

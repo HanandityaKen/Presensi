@@ -12,7 +12,10 @@ class Presence extends Model
         'id',
         'user_id',
         'location',
-        'image_url',
+        'image_url_in',
+        'clock_in_time',
+        'image_url_out',
+        'clock_out_time',
         'presence_status',
         'work_place',
     ];
