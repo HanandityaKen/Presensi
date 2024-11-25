@@ -32,7 +32,7 @@
                 @endif
 
                 <!-- Form Edit Profil -->
-                <form action="{{ route('profile.admin.update') }}" method="POST" class="space-y-4">
+                <form action="{{ route('admin.profile.update') }}" method="POST" class="space-y-4">
                     @csrf
 
                     <!-- Nama -->
