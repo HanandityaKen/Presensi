@@ -17,7 +17,7 @@
             </div>
             <!-- Profile Image and Dropdown -->
             <div class="flex items-center">
-                <img src="https://via.placeholder.com/50" alt="Profile" class="w-12 h-12 rounded-full">
+                <img src="{{$user->image_url ? asset('storage/user/' . $user->image_url) : 'https://via.placeholder.com/150' }}" alt="Profile" class="w-12 h-12 rounded-full">
                 <!-- Dropdown Button -->
                 <button id="dropdownToggle" class="ml-2 p-2 text-gray-600 hover:bg-gray-200 rounded-full focus:outline-none">
                     <svg id="dropdownIcon" class="w-4 h-4 translate-y-[2px] transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">

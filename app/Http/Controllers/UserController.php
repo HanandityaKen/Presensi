@@ -158,20 +158,16 @@ class UserController extends Controller
             'image_url' => 'required|image|mimes:jpeg,jpg,png|max:2048',
         ]);
     
-        // Ambil user saat ini
         $user = Auth::guard('user')->user();
     
-        // Hapus file lama jika ada
         if ($user->image_url) {
-            Storage::delete('public/user/' . $user->image_url);
+            Storage::disk('public')->delete('user/' . $user->image_url);
         }
     
-        // Simpan file baru
         $photo = $request->file('image_url');
         $photoName = $user->id . '_' . Str::uuid() . '.' . $photo->getClientOriginalExtension();
-        $photo->storeAs('public/user', $photoName);
+        $photo->storeAs('user', $photoName, 'public');
     
-        // Perbarui nama file di database
         $user->image_url = $photoName;
         $user->save();
     

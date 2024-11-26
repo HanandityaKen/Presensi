@@ -44,7 +44,7 @@
                 <form action="{{ route('user.upload.photo') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="text-center mb-6">
-                        <img src="https://via.placeholder.com/150" id="profile-image" alt="Foto Profil" class="w-36 h-36 rounded-full object-cover mx-auto mb-4">
+                        <img src="{{$user->image_url ? asset('storage/user/' . $user->image_url) : 'https://via.placeholder.com/150' }}" id="profile-image" alt="Foto Profil" class="w-36 h-36 rounded-full object-cover mx-auto mb-4">
                         <h5 class="text-lg font-semibold" id="name-user-title">{{ $user->username }}</h5>
                         <p class="text-gray-500 mb-4" id="email-user-title">{{ $user->email }}</p>
                         <input type="file" id="upload-photo-input" name="image_url" class="hidden" onchange="this.form.submit()">
