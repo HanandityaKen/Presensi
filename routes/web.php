@@ -27,6 +27,7 @@ Route::middleware(['user'])->group(function () {
   Route::get('/presensi-keluar', [PresenceController::class, 'presenceOutForm'])->name('presensi.out'); // presensi keluar
   Route::get('/riwayat-presensi', [PresenceController::class, 'riwayatPresensi'])->name('riwayat.presensi'); // lihat semua
   Route::get('/akun', [UserController::class, 'profileUser'])->name('profile.user');
+  Route::post('/upload-foto', [UserController::class, 'uploadImage'])->name('user.upload.photo');
   Route::post('/akun-proses', [UserController::class, 'updateProfile'])->name('profile.update');
   Route::post('/logout', [AuthController::class, 'logoutUser'])->name('logout.user');
 });
