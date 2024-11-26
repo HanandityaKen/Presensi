@@ -15,12 +15,16 @@ Route::post('/admin-login-proses', [AuthController::class, 'adminLoginProses'])-
 Route::get('/', [AuthController::class, 'showUserLoginForm'])->name('user.login');
 Route::post('/user-login-proses', [AuthController::class, 'userLoginProses'])->name('user.login.proses');
 
+
+
 //user
 Route::middleware(['user'])->group(function () {
   Route::get('/dashboard', [PresenceController::class, 'dashboard'])->name('dashboard');
   Route::get('/presensi', [PresenceController::class, 'presenceForm'])->name('presensi');
   Route::post('/presensi-store', [PresenceController::class, 'presenceProses'])->name('presensi.store');
   Route::post('/clocked_out', [PresenceController::class, 'clocked_out'])->name('clocked_out.user');
+  Route::get('/presensi-keluar', [PresenceController::class, 'presenceOut'])->name('presensi.out'); // presensi keluar
+  Route::get('/riwayat-presensi', [PresenceController::class, 'riwayatPresensi'])->name('riwayat.presensi'); // lihat semua
   Route::get('/akun', [UserController::class, 'profileUser'])->name('profile.user');
   Route::post('/akun-proses', [UserController::class, 'updateProfile'])->name('profile.update');
   Route::post('/logout', [AuthController::class, 'logoutUser'])->name('logout.user');

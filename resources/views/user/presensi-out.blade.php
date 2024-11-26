@@ -11,7 +11,7 @@
     <div class="container mx-auto p-6">
         <!-- Header -->
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-blue-500">Presensi Masuk</h1>
+            <h1 class="text-2xl font-bold text-blue-500">Presensi Keluar</h1>
             <p class="text-gray-600">Silakan isi detail presensi Anda di bawah ini.</p>
         </div>
 
@@ -29,7 +29,7 @@
         
 
         <!-- Form -->
-        <form action="{{route('presensi.store')}}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+        <form action="" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
             @csrf
             <input type="hidden" id="user_id" name="user_id" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{$user->id}}">
 
@@ -38,19 +38,10 @@
                 <input type="text" id="tanggal" name="tanggal" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('d F Y') }}" disabled>
             </div>
 
-            <!-- Jam Masuk -->
+            <!-- Jam Keluar -->
             <div class="mb-4">
-                <label for="jam_masuk" class="block text-sm font-medium text-gray-700">Jam Masuk</label>
+                <label for="jam_masuk" class="block text-sm font-medium text-gray-700">Jam Keluar</label>
                 <input type="time" id="jam_masuk" name="clock_in_time" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('H:i') }}" readonly>
-            </div>
-
-            <div class="mb-4">
-                <label for="work-place" class="block text-sm font-medium text-gray-700">Tempat Kerja</label>
-                <select id="work-place" name="work_place" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Pilih tempat kerja" required>
-                    <option value="" disabled selected>Pilih Tempat Kerja</option>
-                    <option value="home">WFH</option>
-                    <option value="office">Kantor</option>
-                </select>
             </div>
 
             <!-- Kamera -->
@@ -80,12 +71,6 @@
                 <button type="button" id="capture-foto-button" class="w-full px-4 py-2 mt-3 bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition">
                     Ambil Foto
                 </button>
-            </div>
-
-            <div class="mb-4">
-                <label for="lokasi" class="block text-sm font-medium text-gray-700">Lokasi</label>
-                <input type="text" id="lokasi" name="lokasi" placeholder="Kordinat Lokasi" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
-                <div id="map" class="w-full h-96 mt-4"></div>
             </div>
 
             <!-- Button Submit -->
@@ -221,38 +206,6 @@
                     });
             })
         });
-
-        $(document).ready(function () {
-            var map = L.map('map').setView([51.505, -0.09], 19);
-
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-
-            // Aktifkan geolocation untuk menemukan lokasi pengguna
-            map.locate({ watch: true, maxZoom: 19, enableHighAccuracy: true });
-
-            // Event ketika lokasi ditemukan
-            map.on('locationfound', function (e) {
-                var userLat = e.latitude;
-                var userLng = e.longitude;
-
-                $('#lokasi').val(userLat + ", " + userLng);
-
-                // Tambahkan marker di lokasi pengguna
-                L.marker([userLat, userLng])
-                    .addTo(map)
-                    .bindPopup("Lokasi Anda saat ini")
-                    .openPopup();
-            });
-
-            // Event ketika lokasi tidak ditemukan atau gagal
-            map.on('locationerror', function (e) {
-                alert("Tidak dapat menemukan lokasi Anda. Pastikan GPS atau izin lokasi aktif.");
-                console.error(e.message);
-            });
-        })
 
     </script>
 

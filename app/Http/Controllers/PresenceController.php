@@ -115,4 +115,22 @@ class PresenceController extends Controller
 
         return redirect()->route('user.login');
     }
+
+    public function presenceOut()
+    {
+        $user = Auth::guard('user')->user();
+        
+        return view('user.presensi-out', compact('user'));
+    }
+
+    public function riwayatPresensi()
+    {
+        $user = Auth::guard('user')->user();
+
+        $presences = $user->presences()->orderBy('id', 'desc')->take(5)->get();
+
+        $latestPresence = $user->presences()->orderBy('id', 'desc')->first();
+
+        return view('user.riwayat-presensi', compact('user', 'presences', 'latestPresence'));
+    }
 }
