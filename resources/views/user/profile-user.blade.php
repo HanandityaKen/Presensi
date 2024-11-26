@@ -14,42 +14,52 @@
             <div class="mb-6">
                 <h1 class="text-2xl font-bold text-blue-500">Akun Anda</h1>
                 <p class="text-gray-600">Pastikan informasinya benar sebelum menyimpan.</p>
+                
+                <!-- Feedback -->
+                @if (session('success'))
+                <div class="flex items-center p-4 mb-6 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div>
+                        <span class="font-medium">{{ session('success') }}</span>
+                    </div>
+                </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="bg-red-500 text-white p-4 rounded mb-4">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
             </div>
             <!-- Foto Profil -->
             <div class="text-center mb-6">
-                <img src="https://via.placeholder.com/150" id="profile-image" alt="Foto Profil"
-                    class="w-36 h-36 rounded-full object-cover mx-auto mb-4">
-                <h5 class="text-lg font-semibold" id="name-user-title">{{$user->username}}</h5>
-                <p class="text-gray-500 mb-4" id="email-user-title">Email Pengguna</p>
-                <input type="file" id="upload-photo-input" class="hidden" name="photo">
-                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg"
-                    id="buttonUploadPhoto">Upload Gambar</button>
+                <form action="{{ route('user.upload.photo') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="text-center mb-6">
+                        <img src="https://via.placeholder.com/150" id="profile-image" alt="Foto Profil" class="w-36 h-36 rounded-full object-cover mx-auto mb-4">
+                        <h5 class="text-lg font-semibold" id="name-user-title">{{ $user->username }}</h5>
+                        <p class="text-gray-500 mb-4" id="email-user-title">{{ $user->email }}</p>
+                        <input type="file" id="upload-photo-input" name="image_url" class="hidden" onchange="this.form.submit()">
+                        <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg" 
+                                id="buttonUploadPhoto" 
+                                onclick="document.getElementById('upload-photo-input').click()">
+                            Upload Gambar
+                        </button>
+                    </div>
+                </form>
             </div>
             <!-- Detail Profil -->
             <h6 class="text-lg font-bold text-blue-500 mb-4">Detail Profil</h6>
             
-            <!-- Feedback -->
-            @if (session('success'))
-            <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                    <span class="font-medium">{{ session('success') }}</span>
-                </div>
-            </div>
-            @endif
 
-            @if ($errors->any())
-                <div class="bg-red-500 text-white p-4 rounded mb-4">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
             <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
                 @csrf

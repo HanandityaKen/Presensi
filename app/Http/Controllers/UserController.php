@@ -9,6 +9,9 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
 
 class UserController extends Controller
 {
@@ -148,5 +151,33 @@ class UserController extends Controller
 
         return back()->with('success', 'Profil berhasil diperbarui.');
     }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image_url' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+        ]);
+    
+        // Ambil user saat ini
+        $user = Auth::guard('user')->user();
+    
+        // Hapus file lama jika ada
+        if ($user->image_url) {
+            Storage::delete('public/user/' . $user->image_url);
+        }
+    
+        // Simpan file baru
+        $photo = $request->file('image_url');
+        $photoName = $user->id . '_' . Str::uuid() . '.' . $photo->getClientOriginalExtension();
+        $photo->storeAs('public/user', $photoName);
+    
+        // Perbarui nama file di database
+        $user->image_url = $photoName;
+        $user->save();
+    
+        return redirect()->back()->with('success', 'Foto berhasil diunggah.');
+    }
+    
+
 
 }
