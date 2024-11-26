@@ -36,7 +36,7 @@
                         <div>
                             <p class="text-sm text-gray-500">Keluar</p>
                             <p class="font-semibold">
-                                -- : --
+                                {{\Carbon\Carbon::parse($presence->clock_out_time)->format('H:i')}}
                             </p>
                         </div>
                         <div>

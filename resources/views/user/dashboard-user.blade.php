@@ -43,7 +43,7 @@
         </div>
 
         <!-- Button ke Halaman Form Presensi -->
-        @if (!$latestPresence || $latestPresence->presence_status !== 'clocked_in')
+        @if (!session('clocked_in'))
             <div class="mb-6">
                 <a href="/presensi" class="px-4 py-2 border border-dashed border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition">
                     <i class="fas fa-clipboard-list mr-2"></i>Presensi Sekarang
@@ -51,15 +51,12 @@
             </div>
         @endif
 
-        @if ($latestPresence && $latestPresence->presence_status === 'clocked_in')
-            <form id="clockOutForm" action="{{ route('clocked_out.user') }}" method="POST">
-                @csrf
+        @if (session('clocked_in'))
                 <div class="mb-6">
-                    <a href="javascript:void(0);" onclick="document.getElementById('clockOutForm').submit();" class="px-4 py-2 border border-dashed border-red-500 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition">
+                    <a href="{{route('presensi.out')}}" class="px-4 py-2 border border-dashed border-red-500 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition">
                         <i class="fas fa-clipboard-list mr-2"></i> Keluar
                     </a>
                 </div>
-            </form>
         @endif
 
         <div class="w-full">
@@ -85,8 +82,8 @@
                 <div>
                     <p class="text-sm">Masuk</p>
                     <p class="text-2xl font-bold">
-                        @if($latestPresence && $latestPresence->presence_status === 'clocked_in')
-                            {{ \Carbon\Carbon::parse($latestPresence->create_at)->format('H:i') }}
+                        @if (session('clock_in_time'))
+                            {{ session('clock_in_time') }}
                         @else
                             -- : --
                         @endif
@@ -95,7 +92,13 @@
                 <div class="border-l border-white h-10 lg:border-none"></div>
                 <div>
                     <p class="text-sm">Keluar</p>
-                    <p class="text-2xl font-bold">-- : --</p>
+                    <p class="text-2xl font-bold">
+                        @if (session('clock_out_time'))
+                            {{ session('clock_out_time') }}
+                        @else
+                            -- : --
+                        @endif
+                    </p>
                 </div>
             </div>
         </div>
@@ -121,7 +124,7 @@
                         <div>
                             <p class="text-sm text-gray-500">Keluar</p>
                             <p class="font-semibold">
-                                -- : --
+                                {{ $presence->clock_out_time ? \Carbon\Carbon::parse($presence->clock_out_time)->format('H:i') : '-- : --' }}
                             </p>
                         </div>
                         <div>

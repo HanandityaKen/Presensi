@@ -46,7 +46,7 @@ class PresenceController extends Controller
         return view('user.presensi', compact('user'));
     }
 
-    public function presenceProses(Request $request)
+    public function presenceInProses(Request $request)
     {
         $request->validate([
             'user_id' => 'required|string|exists:user,id',
@@ -90,44 +90,78 @@ class PresenceController extends Controller
         Presence::create([
             'user_id' => $request->user_id,
             'location' => $request->lokasi,
-            'presence_status' => 'clocked_in',
             'image_url_in' => $foto,
             'clock_in_time' => $request->clock_in_time,
             'work_place' => $request->work_place,
         ]);
 
+        session(['clocked_in' => true, 'clock_in_time' => $request->clock_in_time]);
+
         return redirect()->route('dashboard')->with('success', 'Anda sudah melakukan presensi');
     }
 
-    public function clocked_out(Request $request)
-    {
-        $user = Auth::guard('user')->user();
-        $presence = $user->presences()->orderBy('id', 'desc')->first();
-
-        if ($presence && $presence->presence_status === 'clocked_in') {
-            $presence->update(['presence_status' => 'clocked_out']);
-        }
-
-        Auth::guard('user')->logout();
-
-        $request->session()->invalidate(); 
-        $request->session()->regenerateToken();
-
-        return redirect()->route('user.login');
-    }
-
-    public function presenceOut()
+    public function presenceOutForm()
     {
         $user = Auth::guard('user')->user();
         
         return view('user.presensi-out', compact('user'));
     }
 
+    public function presenceOutProses(Request $request)
+    {
+        $request->validate([
+            'foto' => 'required',
+            'clock_out_time' => 'required|date_format:H:i',
+        ]);
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+        
+            $extension = $file->getClientOriginalExtension();
+            $uuid = Str::uuid()->toString(); 
+            $filename = $uuid . '.' . $extension; 
+        
+            $path = Storage::disk('public')->putFileAs('foto_presensi', $file, $filename);
+            
+            $foto = $path;
+        } elseif ($request->filled('foto') && preg_match('/^data:image\/(\w+);base64,/', $request->foto, $matches)) {
+            $extension = strtolower($matches[1]); // Ekstensi file dari Base64
+            $uuid = Str::uuid()->toString();
+            $filename = $uuid . '.' . $extension;
+
+            $base64Image = substr($request->foto, strpos($request->foto, ',') + 1);
+            $binaryImage = base64_decode($base64Image);
+
+            $path = 'foto_presensi_out/' . $filename;
+            Storage::disk('public')->put($path, $binaryImage);
+
+            $foto = $path;
+        } else {
+            return back()->withErrors(['foto' => 'Gambar tidak valid']);
+        }
+
+        $user = Auth::guard('user')->user();
+
+        $presence = $user->presences()
+        ->whereNull('clock_out_time') 
+        ->first();
+
+        $presence->update([
+            'image_url_out' => $foto,
+            'clock_out_time' => $request->clock_out_time,
+        ]);
+
+        session(['clock_out_time' => $request->clock_out_time]);
+        session()->forget('clocked_in');
+
+        return redirect()->route('dashboard')->with('success', 'Anda sudah keluar');
+    }
+
     public function riwayatPresensi()
     {
         $user = Auth::guard('user')->user();
 
-        $presences = $user->presences()->orderBy('id', 'desc')->take(5)->get();
+        $presences = $user->presences()->orderBy('id', 'desc')->get();
 
         $latestPresence = $user->presences()->orderBy('id', 'desc')->first();
 

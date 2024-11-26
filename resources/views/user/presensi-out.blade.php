@@ -29,7 +29,7 @@
         
 
         <!-- Form -->
-        <form action="" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+        <form action="{{route('presensi-out.store')}}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
             @csrf
             <input type="hidden" id="user_id" name="user_id" required class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{$user->id}}">
 
@@ -41,7 +41,7 @@
             <!-- Jam Keluar -->
             <div class="mb-4">
                 <label for="jam_masuk" class="block text-sm font-medium text-gray-700">Jam Keluar</label>
-                <input type="time" id="jam_masuk" name="clock_in_time" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('H:i') }}" readonly>
+                <input type="time" id="jam_keluar" name="clock_out_time" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('H:i') }}" readonly>
             </div>
 
             <!-- Kamera -->

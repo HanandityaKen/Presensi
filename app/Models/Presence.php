@@ -16,7 +16,6 @@ class Presence extends Model
         'clock_in_time',
         'image_url_out',
         'clock_out_time',
-        'presence_status',
         'work_place',
     ];
 
