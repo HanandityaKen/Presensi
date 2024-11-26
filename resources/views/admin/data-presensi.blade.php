@@ -47,11 +47,6 @@
                         </th>
                         <th>
                             <span class="flex items-center">
-                                Status
-                            </span>
-                        </th>
-                        <th>
-                            <span class="flex items-center">
                                 Tempat Bekerja
                             </span>
                         </th>
@@ -72,11 +67,10 @@
                             <td>
                                 <img src="{{ asset('storage/' . $presence->image_url_in) }}" alt="Image" width="100">
                             </td>
-                            <td>{{$presence->clock_in_out ?? '-- : --'}}</td>
+                            <td>{{$presence->clock_out_time ?? '-- : --'}}</td>
                             <td>
                                 <img src="{{ asset('storage/' . $presence->image_url_out) }}" alt="Image" width="100">
                             </td>
-                            <td>{{$presence->presence_status}}</td>
                             <td>{{$presence->work_place}}</td>
                             <td>{{$presence->create_at}}</td>
                         </tr>
