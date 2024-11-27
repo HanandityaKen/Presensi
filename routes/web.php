@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkHourController;
 use App\Http\Controllers\PresenceController;
+use App\Http\Controllers\OauthController;
 
 
 Route::get('/admin', [AuthController::class, 'showAdminLoginForm'])->name('admin.login');
@@ -15,7 +16,8 @@ Route::post('/admin-login-proses', [AuthController::class, 'adminLoginProses'])-
 Route::get('/', [AuthController::class, 'showUserLoginForm'])->name('user.login');
 Route::post('/user-login-proses', [AuthController::class, 'userLoginProses'])->name('user.login.proses');
 
-
+Route::get('oauth/google', [OauthController::class, 'redirectToProvider'])->name('oauth.google');  
+Route::get('oauth/google/callback', [OauthController::class, 'handleProviderCallback'])->name('oauth.google.callback');
 
 //user
 Route::middleware(['user'])->group(function () {
