@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Exception;
 
 class OauthController extends Controller
@@ -25,11 +27,11 @@ class OauthController extends Controller
             $findUser = User::where('gauth_id', $googleUser->id)->first();
 
             //login
-            if (!$findUser) {
+            if (!$findUser && !$currentUser) {
                 return redirect()->route('user.login')->with('error', 'Akun Google Anda tidak ditemukan');
             }
 
-            if (!$currentUser) {
+            if (!$currentUser && $findUser) {
                 Auth::guard('user')->login($findUser);
 
                 return redirect()->route('dashboard');
@@ -44,10 +46,19 @@ class OauthController extends Controller
                 return redirect()->route('profile.user')->with('error', 'Anda sudah terhubung ke Google');
             }
 
+            if ($currentUser->image_url) {
+                Storage::disk('public')->delete('user/' . $currentUser->image_url);
+            }
+        
+            $avatar = file_get_contents($googleUser->avatar);
+            $photoName = $currentUser->id . '_' . Str::uuid() . '.jpg';
+            Storage::disk('public')->put('user/' . $photoName, $avatar);
+        
             $currentUser->update([
+                'email' => $googleUser->email,
                 'gauth_id' => $googleUser->id,
                 'gauth_type' => 'google',
-                'email' => $googleUser->email,
+                'image_url' => $photoName,
             ]);
 
             return redirect()->route('profile.user')->with('success', 'Akun Google Anda sudah terhubung');
