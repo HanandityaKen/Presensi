@@ -54,8 +54,8 @@
                             <td>{{$workHour->clock_out}}</td>
                             <td>
                                 <a href="{{route('admin.work-hour.edit', $workHour->id)}}">
-                                    <button class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 ml-2">
-                                        Update
+                                    <button class="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 ml-2">
+                                        <i class="fa-solid fa-pencil"></i>
                                     </button>
                                 </a>
                             </td>

@@ -31,6 +31,7 @@ Route::middleware(['user'])->group(function () {
   Route::get('/akun', [UserController::class, 'profileUser'])->name('profile.user');
   Route::post('/upload-foto', [UserController::class, 'uploadImage'])->name('user.upload.photo');
   Route::post('/akun-proses', [UserController::class, 'updateProfile'])->name('profile.update');
+  Route::post('/unlink-google', [UserController::class, 'unlinkGoogle'])->name('unlink.google.user');
   Route::post('/logout', [AuthController::class, 'logoutUser'])->name('logout.user');
 });
 
@@ -40,7 +41,7 @@ Route::prefix('admin')->as('admin.')->middleware('admin')->group(function () {
   Route::get('/profile-admin', [AdminController::class, 'profileAdmin'])->name('profile.admin');
   Route::post('/profile-admin-proses', [AdminController::class, 'updateProfile'])->name('profile.update');
   Route::resource('user', UserController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
-  Route::resource('role', RoleController::class)->only(['index', 'create', 'store', 'destroy']);
+  Route::resource('role', RoleController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
   Route::resource('work-hour', WorkHourController::class)->only(['index', 'edit', 'update']);
   Route::resource('data-presensi', PresenceController::class)->only(['index']);
   Route::post('/logout-admin', [AuthController::class, 'logoutAdmin'])->name('logout.admin');

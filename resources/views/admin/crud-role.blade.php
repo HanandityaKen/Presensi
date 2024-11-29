@@ -37,9 +37,9 @@
                             <td>{{$index + 1}}</td>
                             <td>{{$role->name}}</td>
                             <td>
-                                <a href="">
+                                <a href="{{route('admin.role.edit', $role->id)}}">
                                     <button class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 ml-2">
-                                        Update
+                                        <i class="fa-solid fa-pencil"></i>
                                     </button>
                                 </a>
                                 @php
@@ -49,7 +49,7 @@
                                     <button 
                                         class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
                                         onclick="confirmDelete({{ $role->id }})">
-                                        Hapus
+                                        <i class="fa-solid fa-trash"></i>
                                     </button>
                                     <form id="delete-form-{{ $role->id }}" action="{{route('admin.role.destroy', $role->id)}}" method="POST" style="display: none;">
                                         @csrf

@@ -89,10 +89,13 @@
             </div>
 
             <!-- Button Submit -->
-            <div class="flex justify-end">
+            <div class="flex justify-end gap-4">
                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow hover:bg-blue-600 transition">
                     Kirim Presensi
                 </button>
+                <a href="{{ route('dashboard') }}" class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-md shadow hover:bg-gray-600 transition text-center">
+                    Batal
+                </a>
             </div>
         </form>
     </div>
