@@ -37,15 +37,25 @@
                             <td>{{$index + 1}}</td>
                             <td>{{$role->name}}</td>
                             <td>
-                                <button 
-                                    class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
-                                    onclick="confirmDelete({{ $role->id }})">
-                                    Hapus
-                                </button>
-                                <form id="delete-form-{{ $role->id }}" action="{{route('admin.role.destroy', $role->id)}}" method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
+                                <a href="">
+                                    <button class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 ml-2">
+                                        Update
+                                    </button>
+                                </a>
+                                @php
+                                    $isUsedByUser = $users->contains('role_id', $role->id);
+                                @endphp
+                                @if (!$isUsedByUser)
+                                    <button 
+                                        class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
+                                        onclick="confirmDelete({{ $role->id }})">
+                                        Hapus
+                                    </button>
+                                    <form id="delete-form-{{ $role->id }}" action="{{route('admin.role.destroy', $role->id)}}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                @endif
                             </td>
                         </tr> 
                     @empty

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -18,7 +19,9 @@ class RoleController extends Controller
 
         $roles = Role::all();
 
-        return view('admin.crud-role', compact('admin', 'roles'));
+        $users = User::all();
+
+        return view('admin.crud-role', compact('admin', 'roles', 'users'));
     }
 
     /**
