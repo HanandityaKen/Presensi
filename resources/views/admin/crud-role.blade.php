@@ -7,7 +7,7 @@
     <div class="bg-white shadow-md rounded-lg p-6">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl text-blue-500 font-semibold mb-6">Data Role</h2>
-            <a href="{{route('admin.role.create')}}" class="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Tambah data</a>
+            <a href="{{route('admin.role.create')}}" class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Tambah data</a>
         </div>
         @if (session('success'))
             <div class="flex items-center p-4 mt-5 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
@@ -38,9 +38,9 @@
                             <td>{{$role->name}}</td>
                             <td>
                                 <button 
-                                    class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
+                                    class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 ml-2"
                                     onclick="confirmDelete({{ $role->id }})">
-                                    Hapus
+                                    <i class="fa-solid fa-trash"></i>
                                 </button>
                                 <form id="delete-form-{{ $role->id }}" action="{{route('admin.role.destroy', $role->id)}}" method="POST" style="display: none;">
                                     @csrf
