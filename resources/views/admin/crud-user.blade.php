@@ -56,12 +56,12 @@
                             <td>{{$user->role->name}}</td>
                             <td>
                                 <a href="{{route('admin.user.edit', $user->id)}}">
-                                    <button class="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 ml-2">
+                                    <button class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 ml-2">
                                         <i class="fa-solid fa-pencil"></i>
                                     </button>
                                 </a>
                                 <button 
-                                    class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 ml-2"
+                                    class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
                                     onclick="confirmDelete({{ $user->id }})">
                                         <i class="fa-solid fa-trash"></i>
                                 </button>

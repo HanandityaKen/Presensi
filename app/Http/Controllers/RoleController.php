@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -18,7 +19,9 @@ class RoleController extends Controller
 
         $roles = Role::all();
 
-        return view('admin.crud-role', compact('admin', 'roles'));
+        $users = User::all();
+
+        return view('admin.crud-role', compact('admin', 'roles', 'users'));
     }
 
     /**
@@ -45,6 +48,33 @@ class RoleController extends Controller
         ]);
     
         return redirect()->route('admin.role.index')->with('success', 'Role berhasil ditambahkan.');
+    }
+
+    public function edit(string $id)
+    {
+        $admin = Auth::guard('admin')->user();
+
+        $role = Role::findOrFail($id);
+
+        return view('admin.edit-role', compact('admin', 'role'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $role = Role::findOrFail($id);
+
+        $role->name = $request->input('name');
+
+        $role->save();
+
+        return redirect()->route('admin.role.index')->with('success', 'Role berhasil diupdate');
     }
 
     /**

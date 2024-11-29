@@ -121,7 +121,9 @@ class UserController extends Controller
     {
         $user = Auth::guard('user')->user();
 
-        return view('user.profile-user', compact('user'));
+        $connectGoogle = $user->gauth_id;
+
+        return view('user.profile-user', compact('user', 'connectGoogle'));
     }
 
     public function updateProfile(Request $request)
@@ -171,7 +173,20 @@ class UserController extends Controller
         $user->image_url = $photoName;
         $user->save();
     
-        return redirect()->back()->with('success', 'Foto berhasil diunggah.');
+        return redirect()->back()->with('success', 'Foto berhasil diunggah');
+    }
+
+    public function unlinkGoogle()
+    {
+        $user = Auth::guard('user')->user();
+
+        $user->update([
+            'email' => null,
+            'gauth_id' => null,
+            'gauth_type' => null,
+        ]);
+
+        return redirect()->back()->with('success', 'Koneksi ke Akun Google Anda telah berhasil diputuskan');
     }
     
 
