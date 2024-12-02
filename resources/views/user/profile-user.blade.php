@@ -131,11 +131,11 @@
             </div> -->
             <div class="mt-6">
                 <div class="flex items-center justify-between">
-                    <div>
-                        <h6 class="text-lg font-bold text-gray-600">Hubungkan Akun dengan Google</h6>
-                        <p class="text-gray-600">Anda dapat menghubungkan akun ini dengan Google untuk akses yang lebih mudah.</p>
-                    </div>
                     @if ($connectGoogle)
+                        <div>
+                            <h6 class="text-lg font-bold text-gray-600">Akun Anda sudah terhubung dengan Google</h6>
+                            <p class="text-gray-600">Anda dapat menghubungkan akun ini dengan Google untuk akses yang lebih mudah.</p>
+                        </div>
                         <button onclick="confirmDelete()" class="border border-gray-300 text-gray-700 font-bold py-2 px-4 rounded-xl flex items-center justify-center hover:bg-blue-400 hover:text-white gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px" class="flex-shrink-0">
                                 <path fill="#EA4335" d="M24 9.5c3.5 0 6.2 1.4 8.1 2.6l6-6C34.6 3.1 29.8 1 24 1 14.7 1 7 6.8 3.3 14.2l7.6 5.8C12.7 13.1 17.9 9.5 24 9.5z" />
@@ -144,12 +144,16 @@
                                 <path fill="#FBBC05" d="M24 47c5.5 0 10.1-1.8 13.5-4.8l-6.3-4.9c-2.1 1.4-4.8 2.3-7.2 2.3-5.5 0-10.2-3.7-11.9-8.8H3.3v5.8C6.8 41.7 14.2 47 24 47z" />
                                 <path fill="none" d="M0 0h48v48H0z" />
                             </svg>
-                            Sudah terhubung dengan Google
+                            Putuskan koneksi dengan Google
                         </button>
                         <form id="unlinkGoogleForm" action="{{ route('unlink.google.user') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     @else
+                        <div>
+                            <h6 class="text-lg font-bold text-gray-600">Hubungkan Akun dengan Google</h6>
+                            <p class="text-gray-600">Anda dapat menghubungkan akun ini dengan Google untuk akses yang lebih mudah.</p>
+                        </div>
                         <a href="{{route('oauth.google')}}">
                             <button class="border border-gray-300 text-gray-700 font-bold py-2 px-4 rounded-xl flex items-center justify-center hover:bg-blue-400 hover:text-white gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px" class="flex-shrink-0">

@@ -7,7 +7,7 @@
     <div class="bg-white shadow-md rounded-lg p-6">
         <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl text-blue-500 font-semibold">Data Presensi</h2>
-                <div class="flex space-x-4">
+                {{-- <div class="flex space-x-4">
                     <div>
                         <label for="filter-criteria" class="block text-sm font-medium text-gray-500">Filter Berdasarkan</label>
                         <select id="filter-criteria" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -23,7 +23,7 @@
                         <button id="filter-button" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Filter</button> 
                         <!-- <button id="filter-button" class="px-4 py-2 border border-dashed border-blue-500 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white">Filter</button>  -->
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="overflow-x-auto">
                 <table id="search-table">
@@ -76,7 +76,7 @@
                             </th>
                             <th>
                                 <span class="flex items-center">
-                                    Masuk
+                                    Tanggal
                                 </span>
                             </th>
                         </tr>
@@ -107,7 +107,7 @@
                                     </button> -->
                                 </td>
                                 <td>{{$presence->work_place}}</td>
-                                <td>{{$presence->create_at}}</td>
+                                <td>{{ \Carbon\Carbon::parse($presence->create_at)->format('Y-m-d') }}</td>
                             </tr>
 
                             <!-- Modal for Foto Masuk -->
@@ -179,7 +179,19 @@
     if (document.getElementById("search-table") && typeof simpleDatatables.DataTable !== 'undefined') {
         const dataTable = new simpleDatatables.DataTable("#search-table", {
             searchable: true,
-            sortable: false
+            sortable: true,
+            columns: [
+                { select: 0, sortable: false }, 
+                { select: 1, sortable: false }, 
+                { select: 2, sortable: false }, 
+                { select: 3, sortable: false }, 
+                { select: 4, sortable: false }, 
+                { select: 5, sortable: false }, 
+                { select: 6, sortable: false }, 
+                { select: 7, sortable: false },
+                { select: 8, sortable: false },
+                { select: 9, sortable: true, sort: "desc" },  
+            ]
         });
     }
 </script>
