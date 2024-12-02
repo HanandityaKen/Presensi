@@ -35,7 +35,7 @@
 
             <div class="mb-4">
                 <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal</label>                
-                <input type="text" id="tanggal" name="tanggal" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->format('d F Y') }}" disabled>
+                <input type="text" id="tanggal" name="tanggal" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ now()->isoFormat('D MMMM YYYY') }}" disabled>
             </div>
 
             <!-- Jam Keluar -->

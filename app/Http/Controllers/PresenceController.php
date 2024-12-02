@@ -20,7 +20,7 @@ class PresenceController extends Controller
     {
         $admin = Auth::guard('admin')->user();
 
-        $presences = Presence::all();
+        $presences = Presence::orderBy('create_at', 'desc')->get();
 
         return view('admin.data-presensi', compact('admin', 'presences'));
     }
@@ -33,9 +33,7 @@ class PresenceController extends Controller
 
         $presences = $user->presences()->orderBy('id', 'desc')->take(5)->get();
 
-        $latestPresence = $user->presences()->orderBy('id', 'desc')->first();
-
-        return view('user.dashboard-user', compact('user', 'presences', 'latestPresence'));
+        return view('user.dashboard-user', compact('user', 'presences'));
     }
 
 
@@ -96,6 +94,10 @@ class PresenceController extends Controller
         ]);
 
         session(['clocked_in' => true, 'clock_in_time' => $request->clock_in_time]);
+
+        if (session()->has('clock_out_time')) {
+            session()->forget('clock_out_time');
+        }
 
         return redirect()->route('dashboard')->with('success', 'Anda sudah melakukan presensi');
     }
@@ -163,8 +165,6 @@ class PresenceController extends Controller
 
         $presences = $user->presences()->orderBy('id', 'desc')->get();
 
-        $latestPresence = $user->presences()->orderBy('id', 'desc')->first();
-
-        return view('user.riwayat-presensi', compact('user', 'presences', 'latestPresence'));
+        return view('user.riwayat-presensi', compact('user', 'presences'));
     }
 }

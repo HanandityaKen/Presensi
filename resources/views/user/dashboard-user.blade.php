@@ -76,7 +76,7 @@
         <!-- Card Presensi Hari Ini -->
         <div class="bg-blue-500 p-4 rounded-lg shadow text-white mb-6">
             <div class="flex items-center justify-between">
-                <p class="text-lg font-semibold"><i class="fas fa-calendar-alt mr-2"></i>Hari ini, {{now()->format('d F Y')}}</p>
+                <p class="text-lg font-semibold"><i class="fas fa-calendar-alt mr-2"></i>Hari ini, {{now()->isoFormat('D MMMM YYYY')}}</p>
             </div>
             <div class="flex justify-between mt-4">
                 <div>
