@@ -5,6 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckUser;
 use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\NoCache;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'user' => CheckUser::class,
             'admin' => CheckAdmin::class,
+            'no-cache' => NoCache::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
