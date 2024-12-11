@@ -30,13 +30,20 @@
                         <i class="fas fa-user w-5 h-5 mr-3"></i>
                         Akun
                     </a>
-                    <form method="POST" action="{{ route('logout.user') }}">
-                        @csrf
-                        <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100">
+                    @if (!session('clocked_in'))
+                        <form method="POST" action="{{ route('logout.user') }}">
+                            @csrf
+                            <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100">
+                                <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
+                                Logout
+                            </button>
+                        </form>     
+                    @else
+                        <button type="button" class="flex items-center w-full text-left px-4 py-2 text-gray-300 cursor-not-allowed" title="Anda belum presensi keluar" disabled>
                             <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
                             Logout
                         </button>
-                    </form>
+                    @endif
                 </div>
 
             </div>

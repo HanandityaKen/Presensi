@@ -20,7 +20,7 @@ Route::get('oauth/google', [OauthController::class, 'redirectToProvider'])->name
 Route::get('oauth/google/callback', [OauthController::class, 'handleProviderCallback'])->name('oauth.google.callback');
 
 //user
-Route::middleware(['user'])->group(function () {
+Route::middleware(['user', 'no-cache'])->group(function () {
   Route::get('/dashboard', [PresenceController::class, 'dashboard'])->name('dashboard');
   Route::get('/presensi', [PresenceController::class, 'presenceForm'])->name('presensi');
   Route::post('/presensi-in-store', [PresenceController::class, 'presenceInProses'])->name('presensi-in.store');
@@ -37,7 +37,7 @@ Route::middleware(['user'])->group(function () {
 
 
 //admin
-Route::prefix('admin')->as('admin.')->middleware('admin')->group(function () {
+Route::prefix('admin')->as('admin.')->middleware('admin', 'no-cache')->group(function () {
   Route::get('/profile-admin', [AdminController::class, 'profileAdmin'])->name('profile.admin');
   Route::post('/profile-admin-proses', [AdminController::class, 'updateProfile'])->name('profile.update');
   Route::resource('user', UserController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
